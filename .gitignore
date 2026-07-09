@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+*.zip
+*.tar.gz
+
+# Local/runtime/private state
+.env
+.env.*
+!.env.example
+runs/
+logs/
+*.log
+.hermes/
+cron/
+state/
+secrets/
+private/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
