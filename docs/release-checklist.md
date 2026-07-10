@@ -31,7 +31,31 @@ The release gate currently checks:
 - Python syntax for scripts and tests;
 - repository structure tests;
 - public/secret scan;
+- module release gate validation;
+- deterministic release artifact build;
+- clean-checkout release artifact smoke test;
+- release archive scan for private/local material;
 - whitespace/diff hygiene.
+
+## Release artifact gates
+
+Release candidate artifacts are produced with:
+
+```bash
+python3 scripts/build_release_artifacts.py --output-dir dist/release
+```
+
+The builder creates:
+
+- `lumi-social-intelligence-0.1.0-rc.1.zip`
+- `release-manifest.json`
+- `SHA256SUMS`
+
+The release archive is built from tracked public doorway files only. It excludes
+local/runtime/private material such as `.git/`, `.hermes/`, `runs/`, `logs/`,
+cache directories, and generated build outputs. The manifest records package
+artifact status for **Lumi Layered Memory**, **Nuances**, and **Presence**, plus
+the **Lumi for Hermes** dry-run preview artifact paths.
 
 ## Licensing gates
 

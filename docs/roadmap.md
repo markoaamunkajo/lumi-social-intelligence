@@ -235,18 +235,18 @@ No private Presence internals, raw runs, memories, chat logs, scheduler/runtime 
 
 ### Deliverables
 
-- [ ] Add GitHub Actions release workflow.
-- [ ] Run doorway release check in CI.
-- [ ] Build release zip artifact.
-- [ ] Build or collect Python package artifacts for:
+- [x] Add GitHub Actions release workflow.
+- [x] Run doorway release check in CI.
+- [x] Build release zip artifact.
+- [x] Build or collect Python package artifacts for:
   - `lumi-layered-memory`
   - `lumi-nuances`
   - `lumi-presence`
-- [ ] Include **Lumi for Hermes** preview installer artifacts.
-- [ ] Generate checksums.
-- [ ] Attach artifacts to GitHub Release on tag.
-- [ ] Add clean-checkout smoke test.
-- [ ] Add release archive scan for private/local material.
+- [x] Include **Lumi for Hermes** preview installer artifacts.
+- [x] Generate checksums.
+- [x] Attach artifacts to GitHub Release on tag.
+- [x] Add clean-checkout smoke test.
+- [x] Add release archive scan for private/local material.
 
 ### Exit criteria
 
