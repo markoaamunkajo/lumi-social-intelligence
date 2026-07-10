@@ -13,7 +13,7 @@ Development happens in:
 
 ## Public release repository
 
-Release candidates are promoted into:
+Versioned releases are promoted into:
 
 - **Lumi Social Intelligence**
 
@@ -45,7 +45,7 @@ This repository must not contain:
 
 ## Release gate
 
-Every release candidate should pass:
+Every release should pass:
 
 ```bash
 ./scripts/release_check.sh

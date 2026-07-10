@@ -95,7 +95,7 @@ def build_plan(tag: str = 'v0.1.0', notes_path: str = DEFAULT_NOTES) -> dict:
         'human_decision_required': [
             'confirm repository visibility before any public release',
             'inspect release artifacts and SHA256SUMS',
-            'decide whether to publish private release candidate or public release',
+            'decide whether to keep the v0.1.0 release private or approve public visibility',
         ],
         'safety': {
             'creates_tag': False,

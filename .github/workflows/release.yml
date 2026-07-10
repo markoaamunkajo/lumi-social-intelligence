@@ -38,7 +38,7 @@ jobs:
         with:
           name: lumi-social-intelligence-release-artifacts
           path: |
-            dist/release/lumi-social-intelligence-0.1.0-rc.1.zip
+            dist/release/lumi-social-intelligence-0.1.0.zip
             dist/release/release-manifest.json
             dist/release/SHA256SUMS
 
@@ -47,6 +47,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            dist/release/lumi-social-intelligence-0.1.0-rc.1.zip
+            dist/release/lumi-social-intelligence-0.1.0.zip
             dist/release/release-manifest.json
             dist/release/SHA256SUMS

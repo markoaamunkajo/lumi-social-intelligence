@@ -40,7 +40,7 @@ Private repo passes release gate
 → export curated files via script
 → copy into Lumi Social Intelligence
 → run doorway release check
-→ commit as release candidate
+→ commit as release-ready update
 ```
 
 The release doorway should contain only reviewed, public-safe files. It must not include raw runs, private memories, diaries, local runtime state, scheduler internals, credentials, chat IDs, private coordinates, or unverified host claims.
@@ -250,7 +250,7 @@ No private Presence internals, raw runs, memories, chat logs, scheduler/runtime 
 
 ### Exit criteria
 
-- A `v0.1.0-rc.1` tag can build artifacts automatically.
+- A `v0.1.0` tag can build artifacts automatically.
 - Release artifacts can be downloaded, inspected, and smoke-tested from a clean checkout.
 
 ## Sprint 6 — Public-readiness audit
@@ -276,7 +276,7 @@ No private Presence internals, raw runs, memories, chat logs, scheduler/runtime 
 
 - No private or local operational material is present.
 - No unsupported compatibility claim is present.
-- The release artifact matches the stated 0.1.0 scope.
+- The release artifact matches the stated 0.1.0 release scope.
 
 ## Sprint 7 — 0.1.0 release
 

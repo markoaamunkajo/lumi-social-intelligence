@@ -55,7 +55,7 @@ def test_public_readiness_audit_report_passes_for_current_repo(tmp_path):
         assert checks[required]['status'] == 'pass'
 
     archive = checks['release_archive_scan']['details']
-    assert archive['version'] == '0.1.0-rc.1'
+    assert archive['version'] == '0.1.0'
     assert archive['private_material_findings'] == []
     assert archive['canonical_writes'] == 0
     assert 'installers/lumi-for-hermes/preview.py' in archive['archive_members']

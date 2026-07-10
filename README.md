@@ -57,7 +57,7 @@ Development happens in private repositories:
 - **Presence**
 - **Autoresearch**
 
-Tested, reviewed, public-safe updates are promoted here as release candidates. This keeps the public doorway clean while the private workshop can stay messy, experimental, and properly fenced.
+Tested, reviewed, public-safe updates are promoted here as versioned releases. This keeps the public doorway clean while the private workshop can stay messy, experimental, and properly fenced.
 
 ## Initial host target
 
@@ -94,7 +94,7 @@ This repository must never include:
 - unreviewed generated artifacts;
 - host-specific compatibility claims that have not been verified.
 
-Every release candidate must pass the local release gate:
+Every release must pass the local release gate:
 
 ```bash
 ./scripts/release_check.sh

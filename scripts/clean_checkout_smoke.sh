@@ -12,7 +12,7 @@ trap cleanup EXIT
 
 python3 scripts/build_release_artifacts.py --output-dir "$TMP_ROOT/artifacts" >/tmp/lumi-release-build-report.json
 
-test -f "$TMP_ROOT/artifacts/lumi-social-intelligence-0.1.0-rc.1.zip"
+test -f "$TMP_ROOT/artifacts/lumi-social-intelligence-0.1.0.zip"
 test -f "$TMP_ROOT/artifacts/release-manifest.json"
 test -f "$TMP_ROOT/artifacts/SHA256SUMS"
 

@@ -270,7 +270,7 @@ Development happens in private repositories:
 - **Presence**
 - **Autoresearch**
 
-Release candidates are promoted into **Lumi Social Intelligence**, the public-facing release doorway.
+Release-ready updates are promoted into **Lumi Social Intelligence**, the public-facing release doorway.
 
 The promotion path is:
 
@@ -279,7 +279,7 @@ Private repo passes release gate
 → export curated files via script
 → copy into Lumi Social Intelligence
 → run doorway release check
-→ commit as release candidate
+→ commit as release-ready update
 ```
 
 This separation lets the private workshop remain experimental while the public doorway stays clean. It also protects against accidental exposure of raw runs, private memories, local runtime state, scheduler internals, credentials, chat IDs, coordinates, and unverified host claims.
@@ -381,7 +381,7 @@ Private repo passes release gate
 → export curated files via script
 → copy into Lumi Social Intelligence
 → run doorway release check
-→ commit as release candidate
+→ commit as release-ready update
 ```
 
 That release discipline is part of the story. Lumi Social Intelligence is not just about making agents polite. It is about making social adaptation testable. The project uses synthetic fixtures instead of private chat logs, anti-pattern tests instead of vibes, public/secret scans instead of hope, and fail-closed gates instead of uncontrolled live autonomy.

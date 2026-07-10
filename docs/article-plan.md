@@ -148,7 +148,7 @@ Private repo passes release gate
 → export curated files via script
 → copy into Lumi Social Intelligence
 → run doorway release check
-→ commit as release candidate
+→ commit as release-ready update
 ```
 
 - Why Nuances does not directly mutate durable memory.

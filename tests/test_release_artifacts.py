@@ -39,7 +39,7 @@ def test_release_artifact_builder_creates_archive_manifest_and_checksums(tmp_pat
     assert report['canonical_writes'] == 0
     assert report['output_dir'] == str(tmp_path)
 
-    archive = tmp_path / 'lumi-social-intelligence-0.1.0-rc.1.zip'
+    archive = tmp_path / 'lumi-social-intelligence-0.1.0.zip'
     manifest = tmp_path / 'release-manifest.json'
     checksums = tmp_path / 'SHA256SUMS'
 
@@ -48,7 +48,7 @@ def test_release_artifact_builder_creates_archive_manifest_and_checksums(tmp_pat
     assert checksums.exists()
 
     manifest_data = json.loads(manifest.read_text(encoding='utf-8'))
-    assert manifest_data['version'] == '0.1.0-rc.1'
+    assert manifest_data['version'] == '0.1.0'
     assert manifest_data['private_material_findings'] == []
     assert 'installers/lumi-for-hermes/preview.py' in manifest_data['archive_members']
     assert 'adapters/hermes/lumi_for_hermes.py' in manifest_data['archive_members']

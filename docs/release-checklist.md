@@ -41,7 +41,7 @@ The release gate currently checks:
 
 ## Release artifact gates
 
-Release candidate artifacts are produced with:
+Release artifacts are produced with:
 
 ```bash
 python3 scripts/build_release_artifacts.py --output-dir dist/release
@@ -49,7 +49,7 @@ python3 scripts/build_release_artifacts.py --output-dir dist/release
 
 The builder creates:
 
-- `lumi-social-intelligence-0.1.0-rc.1.zip`
+- `lumi-social-intelligence-0.1.0.zip`
 - `release-manifest.json`
 - `SHA256SUMS`
 

@@ -20,7 +20,7 @@ from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0-rc.1'
+VERSION = '0.1.0'
 ARCHIVE_NAME = f'lumi-social-intelligence-{VERSION}.zip'
 FORBIDDEN_MEMBER_PATTERNS = (
     '.git/*',

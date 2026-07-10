@@ -64,7 +64,7 @@ Private repo passes release gate
 → export curated files via script
 → copy into Lumi Social Intelligence
 → run doorway release check
-→ commit as release candidate
+→ commit as release-ready update
 ```
 
 That release discipline is part of the story. Lumi Social Intelligence is not just about making agents polite. It is about making social adaptation testable. The project uses synthetic fixtures instead of private chat logs, anti-pattern tests instead of vibes, public/secret scans instead of hope, and fail-closed gates instead of uncontrolled live autonomy.
