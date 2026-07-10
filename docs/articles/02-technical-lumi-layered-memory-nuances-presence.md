@@ -151,7 +151,7 @@ The conservative parts of Lumi Social Intelligence are not signs of weakness. Th
 
 A system that can remember a user over time should be slower to infer than a stateless chatbot. A system that can act should be more careful about permission than a system that only talks. A system that can adapt socially should show its reasoning and leave room for correction. The more personal the agent becomes, the more important it is that learning remains inspectable.
 
-This is why the `v0.1.0` scope is an installable Hermes preview with review gates, synthetic fixtures, and fail-closed behavior. That milestone proves the shape: memory provides context, Nuances appraises the moment, Presence governs initiative, and the release doorway keeps public artifacts clean. The `v0.2` scope should now prove the next thing: one real demo path from input context to appraisal, presence decision, receipt, and safe no-write boundary, with live-host limitations documented honestly.
+This is why the `v0.1.0` scope is a private, review-gated Hermes preview with synthetic fixtures and fail-closed behavior. That milestone proves the shape: memory provides context, Nuances appraises the moment, Presence governs initiative, and the release doorway keeps public artifacts clean. The `v0.2` scope should now prove the next thing: one demo-evidence path from input context to appraisal, presence decision, receipt, and safe no-write boundary. It is not a live automation claim; live-host limitations should remain documented honestly.
 
 Lumi Social Intelligence is not trying to make agents perform emotion. It is trying to make them safer and more useful at the boundary between memory and action. That is where many long-running assistants will either earn trust or lose it.
 

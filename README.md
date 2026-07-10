@@ -10,7 +10,7 @@ Lumi Layered Memory -> Nuances -> Presence
 
 It gives agent runtimes a governed reflection layer: adaptive memory, nuance, and presence with confidence scoring, contradiction handling, user approval, skill evaluation, review, consent, and repair.
 
-> **Status:** private `v0.1.0` release doorway. The first review-gated **Lumi for Hermes** preview release exists; `v0.2` is focused on live demo proof, product cleanup, and an evidence-backed release candidate.
+> **Status:** private, review-gated `v0.1.0` preview release. The first **Lumi for Hermes** preview release exists as a non-mutating review-card surface; `v0.2` is a demo-evidence path, not a live automation claim. Native Telegram reactions are not claimed until verified by a real host-runtime run.
 
 ## Why it exists
 
@@ -109,6 +109,7 @@ Every release must pass the local release gate:
 - [Licensing](docs/licensing.md)
 - [Release checklist](docs/release-checklist.md)
 - [Module promotion workflow](docs/module-promotion-workflow.md)
+- [v0.1.0 release notes](docs/releases/v0.1.0.md)
 - [0.1.0 Preview + Research Harness](docs/preview-0.1.0-research-harness.md)
 - [0.1.0 Officialization Notes](docs/releases/v0.1.0-officialization-notes.md)
 - [Release roadmap, including v0.2 demo/productization sprints](docs/roadmap.md)
