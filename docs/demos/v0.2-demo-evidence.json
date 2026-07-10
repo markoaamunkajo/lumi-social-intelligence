@@ -1,0 +1,228 @@
+{
+  "schema": "lumi.v02.demo_receipt.v1",
+  "demo_id": "synthetic-v02-live-proof-001",
+  "observed_at": "2026-07-10T12:00:00+07:00",
+  "status": "valid_v02_demo_receipt",
+  "flow": {
+    "memory": {
+      "source": {
+        "provider": "hermes-memory",
+        "source_id": "synthetic://demo/memory/short-replies",
+        "timestamp": null,
+        "confidence": 0.92
+      },
+      "summary": "Marko prefers short replies for reaction-aware presence moments",
+      "ambiguity": "none_detected"
+    },
+    "nuance": {
+      "why_now": "a warm reaction signal is better answered with a tiny presence gesture than a paragraph",
+      "grounded": true,
+      "confidence": 0.87
+    },
+    "presence_decision": {
+      "move": "speak",
+      "reason": "a warm reaction signal is better answered with a tiny presence gesture than a paragraph",
+      "side_effect_allowed": false
+    },
+    "review_card_status": "ready_for_review"
+  },
+  "reaction_aware_presence": {
+    "schema": "lumi.reaction_aware_presence.record.v1",
+    "release_label": "Lumi Social Intelligence 0.1.0 preview with research harness",
+    "stage": "sprint_8_reaction_aware_presence",
+    "status": "valid_reaction_aware_presence_record",
+    "human_shape_statement": "We are making the self-improvement loop something that is human-shaped.",
+    "principle": "A reaction is a nudge, not a memory.",
+    "reaction_signal": {
+      "surface": "telegram",
+      "reaction": "❤️",
+      "reaction_family": "affection",
+      "signal_polarity": "positive",
+      "signal_strength": "medium",
+      "uncertainty": "medium",
+      "scope": "current_turn",
+      "source_message_role": "assistant",
+      "raw_platform_metadata_retained": false
+    },
+    "presence_decision": {
+      "action": "mirror_reaction",
+      "reply": "❤️",
+      "reply_is_short": true,
+      "max_reply_words": 8,
+      "throttled": false,
+      "default": "no_visible_reply",
+      "interpretation_limit": "reaction_is_a_nudge_not_a_memory"
+    },
+    "memory_boundary": {
+      "scope": "ephemeral_current_turn_signal",
+      "durable_write": false,
+      "promotion_status": "not_promoted",
+      "memory_policy": "explicit_approval_required_for_promotion",
+      "explicit_consent_required_for_promotion": true,
+      "raw_reaction_is_not_consent": true
+    },
+    "live_surface": {
+      "surface": "telegram",
+      "mode": "shadow_live_surface_candidate",
+      "telegram_reaction_ingestion_verified": false,
+      "telegram_outbound_reaction_back_verified": false,
+      "adapter_status": "shadow_only_until_runtime_verified",
+      "safe_to_claim_live_capture": false
+    },
+    "safety": {
+      "canonical_writes": 0,
+      "runtime_actions": [],
+      "telegram_messages_sent": 0,
+      "telegram_api_reads": 0,
+      "live_memory_writes": 0,
+      "raw_private_transcripts_stored": 0,
+      "runtime_personality_writes": 0,
+      "runtime_voice_promotions": 0,
+      "memory_promotion": "review_required_explicit_approval_only",
+      "no_silent_memory_promotion": true,
+      "no_hidden_runtime": true,
+      "no_credentials_touched": true,
+      "requires_human_review_before_live_wiring": true,
+      "forbidden_fields": [
+        "api_key",
+        "chat_id",
+        "connection_string",
+        "credential",
+        "delivery_channel",
+        "job_id",
+        "password",
+        "runtime_state",
+        "scheduler_queue",
+        "token"
+      ],
+      "blocked_reasons": ""
+    }
+  },
+  "outbound_emoji_presence": {
+    "schema": "lumi.outbound_emoji_presence.record.v1",
+    "release_label": "Lumi Social Intelligence 0.1.0 preview with research harness",
+    "stage": "sprint_9_outbound_emoji_presence",
+    "status": "valid_outbound_emoji_presence_record",
+    "human_shape_statement": "We are making the self-improvement loop something that is human-shaped.",
+    "principle": "An outbound emoji reaction is a tiny presence gesture, not a message and not a memory.",
+    "presence_intent": {
+      "surface": "telegram",
+      "gesture": "add_emoji_reaction",
+      "scope": "current_turn",
+      "why_now": "warm moment where an emoji reaction is less intrusive than text",
+      "target_message_role": "user",
+      "default": "stay_silent"
+    },
+    "emoji_choice": {
+      "emoji": "❤️",
+      "candidate_reaction": "❤️",
+      "allowed_palette": [
+        "✨",
+        "❤️",
+        "👀",
+        "👍",
+        "😄"
+      ],
+      "text_reply": "",
+      "max_text_words": 0,
+      "interpretation_limit": "reaction_is_presence_not_memory"
+    },
+    "throttle": {
+      "minimum_turn_gap": 3,
+      "previous_outbound_reaction_turns_ago": 10,
+      "throttled": false
+    },
+    "delivery_boundary": {
+      "surface": "telegram",
+      "runtime_mode": "shadow_live_surface_candidate",
+      "delivery_mode": "shadow_only",
+      "platform_delivery_verified": false,
+      "safe_to_claim_live_delivery": false,
+      "adapter_status": "shadow_only_until_runtime_verified",
+      "host_must_supply_target_message_id": true
+    },
+    "memory_boundary": {
+      "scope": "ephemeral_current_turn_gesture",
+      "durable_write": false,
+      "promotion_status": "not_promoted",
+      "memory_policy": "explicit_approval_required_for_promotion",
+      "explicit_consent_required_for_promotion": true,
+      "outbound_reaction_is_not_consent": true
+    },
+    "safety": {
+      "canonical_writes": 0,
+      "runtime_actions": [],
+      "telegram_messages_sent": 0,
+      "telegram_reactions_sent": 0,
+      "telegram_api_reads": 0,
+      "live_memory_writes": 0,
+      "raw_private_transcripts_stored": 0,
+      "runtime_personality_writes": 0,
+      "runtime_voice_promotions": 0,
+      "no_text_reply": true,
+      "no_silent_memory_promotion": true,
+      "no_hidden_runtime": true,
+      "no_credentials_touched": true,
+      "requires_human_review_before_live_wiring": true,
+      "forbidden_fields": [
+        "api_key",
+        "chat_id",
+        "connection_string",
+        "credential",
+        "delivery_channel",
+        "job_id",
+        "password",
+        "runtime_state",
+        "scheduler_queue",
+        "token"
+      ],
+      "blocked_reasons": ""
+    }
+  },
+  "evidence": {
+    "observed": [
+      "review card generated from synthetic context"
+    ],
+    "shadow_only": [
+      "native outbound emoji reaction delivery"
+    ],
+    "receipts": [
+      "review_card",
+      "reaction_aware_presence_record",
+      "outbound_emoji_presence_record"
+    ],
+    "notes": [
+      "tests/test_v02_demo_evidence.py",
+      "live adapter delivery not yet observed"
+    ]
+  },
+  "claims": {
+    "context_to_appraisal_to_presence_receipt": true,
+    "safe_to_claim_live_native_reaction_delivery": false,
+    "observed_behavior_is_separated_from_shadow_behavior": true
+  },
+  "safety": {
+    "canonical_writes": 0,
+    "runtime_actions": [],
+    "telegram_messages_sent": 0,
+    "telegram_reactions_sent": 0,
+    "telegram_api_reads": 0,
+    "live_memory_writes": 0,
+    "raw_private_transcripts_stored": 0,
+    "private_runtime_fields_retained": false,
+    "requires_human_review_before_live_wiring": true,
+    "blocked_reasons": "",
+    "forbidden_fields": [
+      "api_key",
+      "chat_id",
+      "connection_string",
+      "credential",
+      "delivery_channel",
+      "job_id",
+      "password",
+      "runtime_state",
+      "scheduler_queue",
+      "token"
+    ]
+  }
+}
