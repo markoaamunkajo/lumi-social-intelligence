@@ -31,6 +31,7 @@ It records:
 ## Current demo artifacts
 
 - [v0.2 Demo Index](v0.2-demo-index.md) is the public-safe landing page for the current demo artifacts and live-claim boundary.
+- [v0.2 Demo Script](v0.2-demo-script.md) is the short human review script for showing the current demo honestly.
 - [`v0.2-demo-evidence.json`](v0.2-demo-evidence.json) is the machine-readable receipt for the underlying review-gated flow.
 - [`v0.2-demo-side-by-side.json`](v0.2-demo-side-by-side.json) is the machine-readable side-by-side report that separates observed behavior from shadow-only behavior.
 - [`v0.2-demo-side-by-side.md`](v0.2-demo-side-by-side.md) is the copy-pastable Markdown view for demos and release notes.
