@@ -206,16 +206,16 @@ No private Presence internals, raw runs, memories, chat logs, scheduler/runtime 
 
 ### Deliverables
 
-- [ ] Define the **Lumi for Hermes** adapter contract.
-- [ ] Define adapter inputs and outputs.
-- [ ] Connect the flow: memory context → nuance appraisal → presence decision → review card.
-- [ ] Add dry-run mode.
-- [ ] Add review-gated mode.
-- [ ] Ensure fail-closed behavior when any dependency is missing or uncertain.
-- [ ] Add installer path under `installers/lumi-for-hermes/`.
-- [ ] Add uninstall or rollback notes.
-- [ ] Add synthetic fixture tests for the adapter.
-- [ ] Confirm the adapter does not expose private Hermes scheduler internals, job IDs, queues, chat IDs, or local runtime state.
+- [x] Define the **Lumi for Hermes** adapter contract.
+- [x] Define adapter inputs and outputs.
+- [x] Connect the flow: memory context → nuance appraisal → presence decision → review card.
+- [x] Add dry-run mode.
+- [x] Add review-gated mode.
+- [x] Ensure fail-closed behavior when any dependency is missing or uncertain.
+- [x] Add installer path under `installers/lumi-for-hermes/`.
+- [x] Add uninstall or rollback notes.
+- [x] Add synthetic fixture tests for the adapter.
+- [x] Confirm the adapter does not expose private Hermes scheduler internals, job IDs, queues, chat IDs, or local runtime state.
 
 ### Non-goals for 0.1.0
 
