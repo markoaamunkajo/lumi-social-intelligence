@@ -314,7 +314,7 @@ The next phase is intentionally not “more sprint archaeology.” It is product
 - [ ] Run the **Lumi for Hermes** adapter from a clean checkout against the live runtime in dry-run/review-gated mode.
 - [ ] Verify reaction-aware Presence and outbound emoji Presence as live-observed behavior where the host platform supports it.
 - [ ] Capture evidence: command output, screenshots or receipts, timestamps, and any Telegram/API limitation notes.
-- [ ] Add a `docs/demos/` evidence summary that distinguishes observed behavior from still-shadow behavior.
+- [x] Add a `docs/demos/` evidence summary that distinguishes observed behavior from still-shadow behavior. See [v0.2 Demo Index](demos/v0.2-demo-index.md).
 - [ ] Keep native sends/reactions blocked unless explicitly approved for the demo run.
 
 ### Exit criteria

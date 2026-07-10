@@ -112,6 +112,7 @@ Every release must pass the local release gate:
 - [0.1.0 Preview + Research Harness](docs/preview-0.1.0-research-harness.md)
 - [0.1.0 Officialization Notes](docs/releases/v0.1.0-officialization-notes.md)
 - [Release roadmap, including v0.2 demo/productization sprints](docs/roadmap.md)
+- [v0.2 Demo Index](docs/demos/v0.2-demo-index.md)
 - [v0.2 Demo Evidence Path](docs/demos/README.md)
 
 ## License
