@@ -126,6 +126,39 @@ def build_v02_demo_receipt(fixture: dict[str, Any]) -> dict[str, Any]:
     return receipt
 
 
+def build_v02_demo_side_by_side_report(receipt: dict[str, Any]) -> dict[str, Any]:
+    """Build a human-readable side-by-side demo report from a valid receipt."""
+
+    errors = validate_v02_demo_receipt(receipt)
+    observed = receipt.get("evidence", {}).get("observed", []) if isinstance(receipt, dict) else []
+    shadow_only = receipt.get("evidence", {}).get("shadow_only", []) if isinstance(receipt, dict) else []
+    safe_to_claim = bool(
+        isinstance(receipt, dict)
+        and receipt.get("claims", {}).get("safe_to_claim_live_native_reaction_delivery") is True
+    )
+    return {
+        "schema": "lumi.v02.demo_side_by_side_report.v1",
+        "demo_id": receipt.get("demo_id", "") if isinstance(receipt, dict) else "",
+        "status": "ready_for_demo" if not errors else "blocked",
+        "headline": "Observed demo receipt is separate from shadow-only Telegram delivery.",
+        "columns": [
+            {
+                "label": "Observed in this repo",
+                "items": observed if isinstance(observed, list) else [],
+            },
+            {
+                "label": "Shadow-only / not yet claimed live",
+                "items": shadow_only if isinstance(shadow_only, list) else [],
+            },
+        ],
+        "live_claims": {
+            "native_outbound_reaction_delivery": "claimed" if safe_to_claim else "not_claimed",
+        },
+        "safety": receipt.get("safety", {}) if isinstance(receipt, dict) else {},
+        "blocked_reasons": errors,
+    }
+
+
 def validate_v02_demo_receipt(receipt: dict[str, Any]) -> list[str]:
     """Return contract errors for a v0.2 demo receipt."""
 

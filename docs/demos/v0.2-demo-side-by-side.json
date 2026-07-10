@@ -1,0 +1,48 @@
+{
+  "schema": "lumi.v02.demo_side_by_side_report.v1",
+  "demo_id": "synthetic-v02-live-proof-001",
+  "status": "ready_for_demo",
+  "headline": "Observed demo receipt is separate from shadow-only Telegram delivery.",
+  "columns": [
+    {
+      "label": "Observed in this repo",
+      "items": [
+        "review card generated from synthetic context"
+      ]
+    },
+    {
+      "label": "Shadow-only / not yet claimed live",
+      "items": [
+        "native outbound emoji reaction delivery"
+      ]
+    }
+  ],
+  "live_claims": {
+    "native_outbound_reaction_delivery": "not_claimed"
+  },
+  "safety": {
+    "canonical_writes": 0,
+    "runtime_actions": [],
+    "telegram_messages_sent": 0,
+    "telegram_reactions_sent": 0,
+    "telegram_api_reads": 0,
+    "live_memory_writes": 0,
+    "raw_private_transcripts_stored": 0,
+    "private_runtime_fields_retained": false,
+    "requires_human_review_before_live_wiring": true,
+    "blocked_reasons": "",
+    "forbidden_fields": [
+      "api_key",
+      "chat_id",
+      "connection_string",
+      "credential",
+      "delivery_channel",
+      "job_id",
+      "password",
+      "runtime_state",
+      "scheduler_queue",
+      "token"
+    ]
+  },
+  "blocked_reasons": []
+}

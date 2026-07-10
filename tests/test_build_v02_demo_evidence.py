@@ -43,10 +43,31 @@ def test_build_v02_demo_evidence_report_is_public_safe():
     assert report['safety']['telegram_reactions_sent'] == 0
 
 
+def test_build_v02_demo_side_by_side_report_is_public_safe():
+    module = load_demo_module()
+    report = module.build_side_by_side_report()
+
+    assert report['schema'] == 'lumi.v02.demo_side_by_side_report.v1'
+    assert report['status'] == 'ready_for_demo'
+    assert report['columns'][0]['items'] == ['review card generated from synthetic context']
+    assert report['columns'][1]['items'] == ['native outbound emoji reaction delivery']
+    assert report['live_claims']['native_outbound_reaction_delivery'] == 'not_claimed'
+    assert report['safety']['canonical_writes'] == 0
+    assert report['safety']['telegram_reactions_sent'] == 0
+
+
 def test_build_v02_demo_evidence_cli_writes_json_report(tmp_path):
     report_path = tmp_path / 'v02-demo-evidence.json'
+    side_by_side_path = tmp_path / 'v02-demo-side-by-side.json'
     result = subprocess.run(
-        ['python3', str(SCRIPT), '--report', str(report_path)],
+        [
+            'python3',
+            str(SCRIPT),
+            '--report',
+            str(report_path),
+            '--side-by-side-report',
+            str(side_by_side_path),
+        ],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -55,5 +76,8 @@ def test_build_v02_demo_evidence_cli_writes_json_report(tmp_path):
 
     stdout_report = json.loads(result.stdout)
     file_report = json.loads(report_path.read_text(encoding='utf-8'))
+    side_by_side_report = json.loads(side_by_side_path.read_text(encoding='utf-8'))
     assert stdout_report == file_report
     assert file_report['status'] == 'valid_v02_demo_receipt'
+    assert side_by_side_report['status'] == 'ready_for_demo'
+    assert side_by_side_report['live_claims']['native_outbound_reaction_delivery'] == 'not_claimed'

@@ -12,7 +12,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lumi_social_intelligence.v02_demo_evidence import build_v02_demo_receipt
+from lumi_social_intelligence.v02_demo_evidence import (
+    build_v02_demo_receipt,
+    build_v02_demo_side_by_side_report,
+)
 
 DEMO_FIXTURE = {
     "schema": "lumi.v02.demo_fixture_input.v1",
@@ -61,16 +64,31 @@ def build_report() -> dict:
     return build_v02_demo_receipt(DEMO_FIXTURE)
 
 
+def build_side_by_side_report() -> dict:
+    return build_v02_demo_side_by_side_report(build_report())
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build the Lumi v0.2 public-safe demo evidence receipt.")
     parser.add_argument("--report", type=Path, default=ROOT / "docs" / "demos" / "v0.2-demo-evidence.json")
+    parser.add_argument(
+        "--side-by-side-report",
+        type=Path,
+        default=ROOT / "docs" / "demos" / "v0.2-demo-side-by-side.json",
+    )
     args = parser.parse_args(argv)
 
     report = build_report()
+    side_by_side_report = build_side_by_side_report()
     args.report.parent.mkdir(parents=True, exist_ok=True)
+    args.side_by_side_report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    args.side_by_side_report.write_text(
+        json.dumps(side_by_side_report, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
     print(json.dumps(report, indent=2, ensure_ascii=False))
-    return 0 if report["status"] == "valid_v02_demo_receipt" else 1
+    return 0 if report["status"] == "valid_v02_demo_receipt" and side_by_side_report["status"] == "ready_for_demo" else 1
 
 
 if __name__ == "__main__":

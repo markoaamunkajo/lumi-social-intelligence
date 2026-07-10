@@ -1,5 +1,6 @@
 from lumi_social_intelligence.v02_demo_evidence import (
     build_v02_demo_receipt,
+    build_v02_demo_side_by_side_report,
     validate_v02_demo_receipt,
 )
 
@@ -63,6 +64,60 @@ def test_v02_demo_receipt_connects_context_to_presence_with_shadow_boundaries():
     assert receipt['safety']['telegram_messages_sent'] == 0
     assert receipt['safety']['telegram_reactions_sent'] == 0
     assert validate_v02_demo_receipt(receipt) == []
+
+
+def test_v02_demo_side_by_side_report_keeps_observed_and_shadow_claims_apart():
+    receipt = build_v02_demo_receipt({
+        'schema': 'lumi.v02.demo_fixture_input.v1',
+        'demo_id': 'synthetic-v02-live-proof-001',
+        'observed_at': '2026-07-10T12:00:00+07:00',
+        'memory_context': {
+            'provider': 'hermes-memory',
+            'source_id': 'synthetic://demo/memory/short-replies',
+            'text': 'Marko prefers short replies for reaction-aware presence moments.',
+            'confidence': 0.92,
+        },
+        'nuance_appraisal': {
+            'why_now': 'a warm reaction signal is better answered with a tiny presence gesture than a paragraph',
+            'grounded': True,
+            'confidence': 0.87,
+        },
+        'reaction_input': {'reaction': '❤️', 'source_message_role': 'assistant'},
+        'outbound_emoji_input': {
+            'candidate_reaction': '❤️',
+            'target_message_role': 'user',
+            'why_now': 'warm moment where an emoji reaction is less intrusive than text',
+            'previous_outbound_reaction_turns_ago': 10,
+        },
+        'live_observations': [
+            {
+                'surface': 'telegram',
+                'behavior': 'review card generated from synthetic context',
+                'status': 'observed',
+                'evidence': 'pytest fixture receipt',
+            },
+            {
+                'surface': 'telegram',
+                'behavior': 'native outbound emoji reaction delivery',
+                'status': 'shadow_only',
+                'evidence': 'live adapter delivery not yet observed',
+            },
+        ],
+    })
+
+    report = build_v02_demo_side_by_side_report(receipt)
+
+    assert report['schema'] == 'lumi.v02.demo_side_by_side_report.v1'
+    assert report['status'] == 'ready_for_demo'
+    assert report['demo_id'] == 'synthetic-v02-live-proof-001'
+    assert report['columns'][0]['label'] == 'Observed in this repo'
+    assert report['columns'][0]['items'] == ['review card generated from synthetic context']
+    assert report['columns'][1]['label'] == 'Shadow-only / not yet claimed live'
+    assert report['columns'][1]['items'] == ['native outbound emoji reaction delivery']
+    assert report['live_claims']['native_outbound_reaction_delivery'] == 'not_claimed'
+    assert report['headline'] == 'Observed demo receipt is separate from shadow-only Telegram delivery.'
+    assert report['safety']['canonical_writes'] == 0
+    assert report['safety']['telegram_reactions_sent'] == 0
 
 
 def test_v02_demo_receipt_fails_closed_when_live_claim_has_no_observation():
