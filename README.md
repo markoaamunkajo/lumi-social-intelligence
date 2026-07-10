@@ -102,6 +102,7 @@ Every release candidate must pass the local release gate:
 - [Host compatibility](docs/host-compatibility.md)
 - [Licensing](docs/licensing.md)
 - [Release checklist](docs/release-checklist.md)
+- [Module promotion workflow](docs/module-promotion-workflow.md)
 
 ## License
 

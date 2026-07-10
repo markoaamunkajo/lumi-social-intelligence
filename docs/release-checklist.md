@@ -8,6 +8,7 @@ Before Lumi Social Intelligence is made public or tagged for release, verify eac
 - [ ] Public-facing docs use **Lumi Layered Memory**, **Nuances**, and **Presence** as product names.
 - [ ] Autoresearch is described only as private harness/evidence infrastructure.
 - [ ] No OpenClaw adapter, installer, or support claim exists before compatibility research.
+- [ ] Module promotion workflow documents read-only audit, review-only plan, and explicit reviewed apply.
 - [ ] GitHub About description and topics match the public product story.
 
 ## Safety/privacy gates

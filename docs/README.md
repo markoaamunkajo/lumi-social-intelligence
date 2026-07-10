@@ -10,6 +10,7 @@ This directory contains the public-facing documentation for **Lumi Social Intell
 - [Host compatibility](host-compatibility.md) — host-neutral contract and current adapter status.
 - [Licensing](licensing.md) — code, documentation, and branding license model.
 - [Release checklist](release-checklist.md) — pre-publication gate.
+- [Module promotion workflow](module-promotion-workflow.md) — reviewed private-to-doorway airlock.
 - [Module release gates](module-release-gates.json) — package names and fail-closed module promotion rules.
 
 ## Module export audit

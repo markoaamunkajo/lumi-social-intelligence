@@ -138,45 +138,52 @@ See [Article Plan for NotebookLM](article-plan.md).
 
 ## Sprint 2 — Module release gates and package names
 
+**Status:** Complete for the public doorway machinery; no private module candidate has been exported yet.
+
 **Goal:** Make each private product module independently promotable into the release doorway.
 
 ### Deliverables
 
-- [ ] Rename or normalize the **Lumi Layered Memory** distribution to `lumi-layered-memory`.
-- [ ] Rename or normalize the **Nuances** distribution to `lumi-nuances`.
-- [ ] Add package metadata for **Presence** as `lumi-presence`.
-- [ ] Ensure each private module has an executable release gate.
-- [ ] Run **Lumi Layered Memory** release gate.
-- [ ] Run **Nuances** release gate.
-- [ ] Run **Presence** release gate.
-- [ ] Confirm each module uses only synthetic or public-safe fixture data in release surfaces.
-- [ ] Confirm each module has public-safe README/docs boundaries.
+- [x] Normalize public package naming decisions:
+  - **Lumi Layered Memory** → `lumi-layered-memory`
+  - **Nuances** → `lumi-nuances`
+  - **Presence** → `lumi-presence`
+- [x] Define module release gates and public export allowlists.
+- [x] Add read-only module export audit.
+- [x] Add non-mutating reviewed copy-plan generator.
+- [x] Add explicit reviewed apply command for human-approved plans.
+- [x] Document the private-to-doorway module promotion workflow.
+- [x] Add synthetic end-to-end audit → plan → apply coverage without private sources.
+- [x] Confirm public module surfaces use synthetic or public-safe fixture data only.
+- [x] Confirm each module has public-safe README/docs boundaries.
 
 ### Exit criteria
 
-- All three module release gates pass locally.
 - Package/distribution names match the 0.1.0 naming decision.
-- Each module has a clear public export surface.
+- Each module has a clear public export surface and fail-closed allowlist.
+- Promotion follows the reviewed airlock: read-only audit → review-only plan → explicit reviewed apply.
+- The doorway release check catches missing product names, private-path leaks, and secret-shaped material.
 
-## Sprint 3 — Curated export and promotion scripts
+## Sprint 3 — First curated module promotion
 
-**Goal:** Make promotion from private development repositories to **Lumi Social Intelligence** repeatable.
+**Goal:** Promote the first intentionally small public-safe module candidate into **Lumi Social Intelligence**.
 
 ### Deliverables
 
-- [ ] Add an export script for **Lumi Layered Memory**.
-- [ ] Add an export script for **Nuances**.
-- [ ] Add an export script for **Presence**.
-- [ ] Define allowlists for promoted files.
-- [ ] Exclude private runtime state, raw runs, local logs, credentials, and internal planning material.
-- [ ] Copy curated exports into `core/` in **Lumi Social Intelligence**.
+- [ ] Choose the first candidate module, likely **Presence**.
+- [ ] Prepare a tiny public-safe candidate: README, package skeleton, synthetic examples, and synthetic tests only.
+- [ ] Run the private candidate's own release gate.
+- [ ] Run the doorway read-only export audit.
+- [ ] Review the generated copy plan.
+- [ ] Apply the reviewed plan with `--apply-reviewed-plan`.
 - [ ] Run doorway release check after import.
 - [ ] Commit imports as release-candidate updates only after checks pass.
 
 ### Exit criteria
 
-- A clean private-to-doorway promotion can be repeated without manual guessing.
-- The doorway release check catches missing product names, missing licenses, private-path leaks, and secret-shaped material.
+- A real private-to-doorway promotion completes without manual guessing.
+- The first module export contains no private internals, raw runs, logs, credentials, or unreviewed generated artifacts.
+- The release doorway remains private until the full public-readiness audit passes.
 
 ## Sprint 4 — Lumi for Hermes installable preview
 
