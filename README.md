@@ -8,7 +8,7 @@ Lumi Social Intelligence is the public-facing release doorway for three cooperat
 Lumi Layered Memory -> Nuances -> Presence
 ```
 
-It gives agent runtimes a social-intelligence layer: adaptive memory, nuance, and presence with review, consent, and repair.
+It gives agent runtimes a governed reflection layer: adaptive memory, nuance, and presence with confidence scoring, contradiction handling, user approval, skill evaluation, review, consent, and repair.
 
 > **Status:** private playground. This repository is being shaped before public release. Do not treat it as install-ready yet.
 
@@ -19,6 +19,12 @@ Modern assistants do not only need more context. They need better judgment about
 Lumi Social Intelligence is built around a simple promise:
 
 > Agents that remember carefully, read the room better, and know when not to act.
+
+It is also built around a stricter self-improvement boundary:
+
+> We are making the self-improvement loop something that is human-shaped.
+
+That means **Lumi Social Intelligence** is not an auto-personality-rewriter. It is a governed reflection layer around agent self-improvement: observations can be scored, contradicted, reviewed, rejected, repaired, or promoted with explicit approval. The agent does not freely rewrite its identity after every interaction.
 
 ## The product layer
 

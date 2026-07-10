@@ -45,6 +45,7 @@ REQUIRED_RELEASE_MEMBERS = (
     'NOTICE.md',
     'scripts/release_check.sh',
     'scripts/public_secret_scan.py',
+    'scripts/public_readiness_audit.py',
     'scripts/build_release_artifacts.py',
     'adapters/hermes/lumi_for_hermes.py',
     'adapters/hermes/README.md',

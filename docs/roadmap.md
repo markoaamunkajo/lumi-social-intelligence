@@ -259,16 +259,18 @@ No private Presence internals, raw runs, memories, chat logs, scheduler/runtime 
 
 ### Deliverables
 
-- [ ] Audit tracked files.
-- [ ] Audit ignored local artifacts separately.
-- [ ] Run secret/privacy scan.
-- [ ] Run naming scan for product-name consistency.
-- [ ] Run host-claim scan.
-- [ ] Verify OpenClaw remains deferred unless compatibility research is complete.
-- [ ] Verify licenses and notice files.
-- [ ] Verify GitHub About metadata.
-- [ ] Verify release archive contents.
-- [ ] Verify clean install or clean inspection path for **Lumi for Hermes**.
+- [x] Audit tracked files.
+- [x] Audit ignored local artifacts separately.
+- [x] Run secret/privacy scan.
+- [x] Run naming scan for product-name consistency.
+- [x] Run host-claim scan.
+- [x] Verify OpenClaw remains deferred unless compatibility research is complete.
+- [x] Verify licenses and notice files.
+- [x] Verify GitHub About metadata recommendation.
+- [x] Verify release archive contents.
+- [x] Verify clean install or clean inspection path for **Lumi for Hermes**.
+- [x] Add public README positioning for human-shaped, governed self-improvement.
+- [x] Add repeatable public-readiness audit to the release gate.
 
 ### Exit criteria
 
