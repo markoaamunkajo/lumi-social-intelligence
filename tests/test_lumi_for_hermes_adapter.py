@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from adapters.hermes.lumi_for_hermes import build_preview_loop_card, build_review_card
+from adapters.hermes.lumi_for_hermes import (
+    build_preview_loop_card,
+    build_reaction_presence_card,
+    build_review_card,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 PREVIEW = ROOT / 'installers' / 'lumi-for-hermes' / 'preview.py'
@@ -150,6 +154,40 @@ def test_preview_loop_rejects_private_hermes_runtime_fields(forbidden):
             'pattern_name': 'safe-fixture',
             'proposed_adjustment': 'Ask before applying.',
             'consent_state': 'ask_before_apply',
+        })
+
+
+def test_reaction_presence_card_is_shadow_only_and_tiny():
+    card = build_reaction_presence_card({
+        'schema': 'lumi.hermes.reaction_presence_input.v1',
+        'mode': 'reaction_presence_shadow',
+        'surface': 'telegram',
+        'reaction': '❤️',
+        'source_message_role': 'assistant',
+        'scope': 'current_turn',
+        'previous_reaction_ack_turns_ago': 10,
+    })
+
+    assert card['schema'] == 'lumi.reaction_aware_presence.record.v1'
+    assert card['stage'] == 'sprint_8_reaction_aware_presence'
+    assert card['reaction_signal']['reaction_family'] == 'affection'
+    assert card['presence_decision']['reply'] == '❤️'
+    assert card['presence_decision']['reply_is_short'] is True
+    assert card['live_surface']['mode'] == 'shadow_live_surface_candidate'
+    assert card['live_surface']['telegram_reaction_ingestion_verified'] is False
+    assert card['safety']['canonical_writes'] == 0
+    assert card['safety']['runtime_actions'] == []
+    assert card['safety']['telegram_messages_sent'] == 0
+
+
+@pytest.mark.parametrize('forbidden', ['chat_id', 'token', 'api_key', 'scheduler_queue', 'runtime_state'])
+def test_reaction_presence_card_rejects_private_runtime_fields(forbidden):
+    with pytest.raises(ValueError, match=forbidden):
+        build_reaction_presence_card({
+            'schema': 'lumi.hermes.reaction_presence_input.v1',
+            'mode': 'reaction_presence_shadow',
+            'reaction': '👍',
+            forbidden: 'do-not-export',
         })
 
 

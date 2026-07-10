@@ -117,6 +117,7 @@ Every release must pass the local release gate:
 - [Sprint 5 Evaluation and Acceptance Criteria](docs/sprint-5-evaluation-acceptance-criteria.md)
 - [Sprint 6 Official 0.1.0 Packaging / Release Notes](docs/sprint-6-official-0.1.0-packaging-release-notes.md)
 - [Sprint 7 Live Preview Run](docs/sprint-7-live-preview-run.md)
+- [Sprint 8 Reaction-Aware Presence](docs/sprint-8-reaction-aware-presence.md)
 - [0.1.0 Officialization Notes](docs/releases/v0.1.0-officialization-notes.md)
 
 ## License

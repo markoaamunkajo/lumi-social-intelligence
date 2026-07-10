@@ -10,8 +10,20 @@ from typing import Any
 
 from core.presence.src.lumi_presence import decide_presence_move
 from lumi_social_intelligence.memory_provider import build_compatibility_packet
+from lumi_social_intelligence.reaction_aware_presence import build_reaction_aware_presence_record
 
-FORBIDDEN_HOST_FIELDS = {"chat_id", "job_id", "scheduler_queue", "runtime_state"}
+FORBIDDEN_HOST_FIELDS = {
+    "api_key",
+    "chat_id",
+    "connection_string",
+    "credential",
+    "delivery_channel",
+    "job_id",
+    "password",
+    "runtime_state",
+    "scheduler_queue",
+    "token",
+}
 SUPPORTED_MODES = {"dry_run", "review_gated"}
 MIN_MEMORY_CONFIDENCE = 0.7
 MIN_NUANCE_CONFIDENCE = 0.7
@@ -32,6 +44,27 @@ PREVIEW_REQUIRED_FIELDS = [
     "proposed_adjustment",
     "consent_state",
 ]
+
+
+def build_reaction_presence_card(adapter_input: dict[str, Any]) -> dict[str, Any]:
+    """Build a shadow-only Sprint 8 reaction-aware Presence card for Hermes.
+
+    This host adapter does not read Telegram APIs, send replies, mutate Hermes
+    runtime, or promote memory. It only translates explicit host-provided
+    reaction input into the shared Sprint 8 contract.
+    """
+
+    if not isinstance(adapter_input, dict):
+        raise ValueError("reaction presence input must be a mapping")
+    _reject_private_runtime_fields(adapter_input)
+    mode = adapter_input.get("mode", "reaction_presence_shadow")
+    if mode != "reaction_presence_shadow":
+        raise ValueError(f"unsupported reaction presence mode: {mode}")
+    payload = dict(adapter_input)
+    payload["runtime_mode"] = "shadow_live_surface_candidate"
+    payload.setdefault("surface", "telegram")
+    return build_reaction_aware_presence_record(payload)
+
 
 
 def build_preview_loop_card(adapter_input: dict[str, Any]) -> dict[str, Any]:

@@ -54,12 +54,21 @@ memory context → compatibility packet → nuance appraisal → Presence decisi
 
 - `dry_run` — produce a review card only.
 - `review_gated` — same zero-write behavior, but labeled for future human approval workflows.
+- `reaction_presence_shadow` — Sprint 8 reaction-aware Presence card from explicit host-provided reaction input; no Telegram API reads/sends and no memory promotion.
 
-Both modes currently have:
+Both regular modes currently have:
 
 - `canonical_writes: 0`
 - `runtime_actions: []`
 - `requires_human_review: true`
+
+Reaction presence shadow mode additionally keeps:
+
+- `telegram_reaction_ingestion_verified: false`
+- `telegram_outbound_reaction_back_verified: false`
+- `telegram_messages_sent: 0`
+- `live_memory_writes: 0`
+- reaction-back replies tiny, optional, and throttled
 
 ## Fail-closed behavior
 
