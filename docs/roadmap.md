@@ -346,12 +346,12 @@ The next phase is intentionally not “more sprint archaeology.” It is product
 
 ### Deliverables
 
-- [ ] Add one canonical demo flow with synthetic/public-safe input, expected Nuances appraisal, Presence decision, review card, and no-write boundary.
-- [ ] Add a demo verifier that fails if required receipts, safety fields, or blocked-action explanations are missing.
-- [ ] Build release artifacts from tracked files only.
-- [ ] Run release check, public-readiness audit, clean-checkout smoke, secret/privacy scan, and DOCX verification.
-- [ ] Draft `docs/releases/v0.2.0.md` with explicit “observed live,” “review-gated,” and “not yet supported” sections.
-- [ ] Prepare a release-candidate tag only after the tree is clean and artifacts verify.
+- [x] Add one canonical demo flow with synthetic/public-safe input, expected Nuances appraisal, Presence decision, review card, and no-write boundary.
+- [x] Add a demo verifier that fails if required receipts, safety fields, or blocked-action explanations are missing.
+- [x] Build release artifacts from tracked files only.
+- [x] Run release check, public-readiness audit, clean-checkout smoke, secret/privacy scan, and DOCX verification.
+- [x] Draft `docs/releases/v0.2.0.md` with explicit “observed live,” “review-gated,” and “not yet supported” sections.
+- [x] Prepare a release-candidate plan only after the tree is clean and artifacts verify.
 
 ### Exit criteria
 

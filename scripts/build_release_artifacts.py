@@ -20,7 +20,12 @@ from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0'
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.verify_v02_demo_package import verify as verify_v02_demo_package
+
+VERSION = '0.2.0'
 ARCHIVE_NAME = f'lumi-social-intelligence-{VERSION}.zip'
 FORBIDDEN_MEMBER_PATTERNS = (
     '.git/*',
@@ -44,11 +49,18 @@ REQUIRED_RELEASE_MEMBERS = (
     'LICENSE-DOCS.md',
     'NOTICE.md',
     'docs/releases/v0.1.0.md',
+    'docs/releases/v0.2.0.md',
+    'docs/demos/v0.2-demo-evidence.json',
+    'docs/demos/v0.2-demo-side-by-side.json',
+    'docs/demos/v0.2-demo-side-by-side.md',
+    'docs/demos/v0.2-demo-index.md',
+    'docs/demos/v0.2-demo-script.md',
     'scripts/release_check.sh',
     'scripts/public_secret_scan.py',
     'scripts/public_readiness_audit.py',
     'scripts/prepare_release_candidate.py',
     'scripts/build_release_artifacts.py',
+    'scripts/verify_v02_demo_package.py',
     'adapters/hermes/lumi_for_hermes.py',
     'adapters/hermes/README.md',
     'installers/lumi-for-hermes/preview.py',
@@ -132,6 +144,10 @@ def build(output_dir: Path) -> dict[str, object]:
     if findings:
         raise SystemExit(f'private material findings: {findings}')
 
+    v02_demo_verification = verify_v02_demo_package()
+    if v02_demo_verification['status'] != 'verified':
+        raise SystemExit(f'v0.2 demo verification failed: {v02_demo_verification["findings"]}')
+
     members = tracked_members
     missing_required = [member for member in REQUIRED_RELEASE_MEMBERS if member not in members]
     if missing_required:
@@ -152,6 +168,12 @@ def build(output_dir: Path) -> dict[str, object]:
             'mode': 'dry_run_review_card_only',
         },
         'private_material_findings': findings,
+        'v02_demo_verification': {
+            'status': v02_demo_verification['status'],
+            'canonical_writes': v02_demo_verification['canonical_writes'],
+            'markdown_matches_json': v02_demo_verification['markdown_matches_json'],
+            'native_outbound_reaction_delivery': v02_demo_verification['live_claim_boundary']['native_outbound_reaction_delivery'],
+        },
         'canonical_writes': 0,
     }
     manifest_path = output_dir / 'release-manifest.json'

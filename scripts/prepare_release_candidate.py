@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_NOTES = 'docs/releases/v0.1.0.md'
+DEFAULT_NOTES = 'docs/releases/v0.2.0.md'
 
 
 def _run(command: list[str]) -> str:
@@ -32,17 +32,29 @@ def _is_clean_status(status: str) -> bool:
 
 def _release_notes_summary(notes_path: Path) -> dict:
     text = notes_path.read_text(encoding='utf-8')
-    required = [
-        'We are making the self-improvement loop something that is human-shaped.',
-        'governed reflection layer',
-        'not an auto-personality-rewriter',
-        'confidence scoring',
-        'contradiction handling',
-        'user approval',
-        'skill evaluation',
-        'Lumi for Hermes',
-        'canonical_writes: 0',
-    ]
+    if notes_path.name == 'v0.2.0.md':
+        required = [
+            'release-candidate',
+            'Observed / verified in this repository',
+            'Review-gated / no-write boundary',
+            'Not yet supported or not yet claimed live',
+            'native outbound emoji reaction delivery',
+            'not_claimed',
+            'canonical_writes: 0',
+            'docs/demos/v0.2-demo-evidence.json',
+        ]
+    else:
+        required = [
+            'We are making the self-improvement loop something that is human-shaped.',
+            'governed reflection layer',
+            'not an auto-personality-rewriter',
+            'confidence scoring',
+            'contradiction handling',
+            'user approval',
+            'skill evaluation',
+            'Lumi for Hermes',
+            'canonical_writes: 0',
+        ]
     missing = [item for item in required if item not in text]
     return {
         'path': str(notes_path.relative_to(ROOT)),
@@ -52,7 +64,7 @@ def _release_notes_summary(notes_path: Path) -> dict:
     }
 
 
-def build_plan(tag: str = 'v0.1.0', notes_path: str = DEFAULT_NOTES) -> dict:
+def build_plan(tag: str = 'v0.2.0', notes_path: str = DEFAULT_NOTES) -> dict:
     blockers: list[str] = []
     status = _run(['git', 'status', '--short', '--branch'])
     branch = _run(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
@@ -95,7 +107,7 @@ def build_plan(tag: str = 'v0.1.0', notes_path: str = DEFAULT_NOTES) -> dict:
         'human_decision_required': [
             'confirm repository visibility before any public release',
             'inspect release artifacts and SHA256SUMS',
-            'decide whether to keep the v0.1.0 release private or approve public visibility',
+            'decide whether to publish the v0.2.0 release-candidate or keep it as demo evidence only',
         ],
         'safety': {
             'creates_tag': False,
@@ -109,7 +121,7 @@ def build_plan(tag: str = 'v0.1.0', notes_path: str = DEFAULT_NOTES) -> dict:
 
 def main(argv: list[str] | None = None) -> dict:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--tag', default='v0.1.0')
+    parser.add_argument('--tag', default='v0.2.0')
     parser.add_argument('--notes', default=DEFAULT_NOTES)
     parser.add_argument('--report', default='')
     args = parser.parse_args(argv)

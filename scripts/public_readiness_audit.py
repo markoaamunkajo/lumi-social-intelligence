@@ -202,6 +202,7 @@ def release_archive_scan_check(artifact_dir: Path) -> dict[str, Any]:
         'archive_members': archive_members,
         'private_material_findings': manifest['private_material_findings'],
         'canonical_writes': manifest['canonical_writes'],
+        'v02_demo_verification': manifest.get('v02_demo_verification', {}),
         'package_artifacts': manifest['package_artifacts'],
     }
     return _check('release_archive_scan', findings, details)
