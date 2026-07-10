@@ -109,6 +109,15 @@ Every release must pass the local release gate:
 - [Licensing](docs/licensing.md)
 - [Release checklist](docs/release-checklist.md)
 - [Module promotion workflow](docs/module-promotion-workflow.md)
+- [0.1.0 Preview + Research Harness](docs/preview-0.1.0-research-harness.md)
+- [Sprint 1 Research Harness Contract](docs/sprint-1-research-harness-contract.md)
+- [Sprint 2 Preview Loop Protocol](docs/sprint-2-preview-loop-protocol.md)
+- [Sprint 3 Signal / Reflection Schema](docs/sprint-3-signal-reflection-schema.md)
+- [Sprint 4 Consent, Memory Boundary, and Safety](docs/sprint-4-consent-memory-boundary.md)
+- [Sprint 5 Evaluation and Acceptance Criteria](docs/sprint-5-evaluation-acceptance-criteria.md)
+- [Sprint 6 Official 0.1.0 Packaging / Release Notes](docs/sprint-6-official-0.1.0-packaging-release-notes.md)
+- [Sprint 7 Live Preview Run](docs/sprint-7-live-preview-run.md)
+- [0.1.0 Officialization Notes](docs/releases/v0.1.0-officialization-notes.md)
 
 ## License
 

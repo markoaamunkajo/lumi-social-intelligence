@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="Lumi Social Intelligence press hero illustration">
+  <defs>
+    <radialGradient id="bgGlow" cx="65%" cy="48%" r="60%">
+      <stop offset="0%" stop-color="#fff6d8" stop-opacity="0.92"/>
+      <stop offset="35%" stop-color="#bfe8ff" stop-opacity="0.42"/>
+      <stop offset="70%" stop-color="#18253f" stop-opacity="0.82"/>
+      <stop offset="100%" stop-color="#07101f"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8d889"/>
+      <stop offset="0.52" stop-color="#dff7ff"/>
+      <stop offset="1" stop-color="#8fb4ff"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.84"/>
+      <stop offset="1" stop-color="#d9f4ff" stop-opacity="0.44"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#020712" flood-opacity="0.42"/>
+    </filter>
+    <style>
+      .title{font: 700 72px -apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',Arial,sans-serif; fill:#f7fbff; letter-spacing:-1px}
+      .sub{font: 400 30px -apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',Arial,sans-serif; fill:#cfe4f7}
+      .tiny{font: 500 21px -apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',Arial,sans-serif; fill:#eaf8ff}
+      .line{stroke:#dff7ff;stroke-opacity:.28;stroke-width:2;fill:none}
+      .dash{stroke:#f8d889;stroke-opacity:.62;stroke-width:3;fill:none;stroke-dasharray:8 15;stroke-linecap:round}
+      .node{fill:#fff6d8;stroke:#e0f7ff;stroke-width:3}
+    </style>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGlow)"/>
+  <circle cx="1255" cy="500" r="390" fill="#90dfff" opacity=".16" filter="url(#soft)"/>
+  <circle cx="1260" cy="500" r="220" fill="#ffe9a8" opacity=".22" filter="url(#soft)"/>
+
+  <g opacity=".22">
+    <path class="line" d="M100 170 C440 120, 600 300, 840 245 S1220 120, 1580 220 S1840 350, 1940 300"/>
+    <path class="line" d="M-80 825 C280 760, 530 900, 820 800 S1280 660, 1660 850 S1950 900, 2050 720"/>
+    <path class="line" d="M310 80 C370 360, 250 590, 410 870"/>
+    <path class="line" d="M1680 80 C1580 360, 1760 610, 1615 980"/>
+  </g>
+
+  <g transform="translate(1090 190)" filter="url(#shadow)">
+    <ellipse cx="220" cy="350" rx="365" ry="152" fill="none" stroke="url(#ring)" stroke-width="7" opacity=".78" transform="rotate(-18 220 350)"/>
+    <ellipse cx="220" cy="350" rx="300" ry="124" fill="none" stroke="url(#ring)" stroke-width="5" opacity=".58" transform="rotate(22 220 350)"/>
+    <ellipse cx="220" cy="350" rx="230" ry="92" fill="none" stroke="url(#ring)" stroke-width="4" opacity=".48" transform="rotate(62 220 350)"/>
+    <circle cx="220" cy="350" r="118" fill="#fff6d8" opacity=".20"/>
+    <circle cx="220" cy="350" r="76" fill="#fff8df" opacity=".52"/>
+    <circle cx="220" cy="350" r="26" fill="#ffffff"/>
+    <path class="dash" d="M-80 265 C70 200, 190 228, 328 176 S598 150, 680 260"/>
+    <path class="dash" d="M-64 470 C100 540, 250 520, 392 586 S610 604, 710 492"/>
+    <circle class="node" cx="-10" cy="250" r="11"/><circle class="node" cx="480" cy="170" r="9"/><circle class="node" cx="568" cy="522" r="12"/><circle class="node" cx="88" cy="535" r="8"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1120" y="190" width="238" height="92" rx="24" fill="url(#card)" stroke="#e8fbff" stroke-opacity=".42"/>
+    <path d="M1150 237 l20 20 l45 -50" fill="none" stroke="#ffe39c" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="1235" y="222" width="82" height="9" rx="5" fill="#effcff" opacity=".72"/>
+    <rect x="1235" y="243" width="56" height="8" rx="4" fill="#c6ebff" opacity=".58"/>
+
+    <rect x="1460" y="690" width="268" height="104" rx="26" fill="url(#card)" stroke="#e8fbff" stroke-opacity=".42"/>
+    <circle cx="1512" cy="742" r="24" fill="#ffe6a7" opacity=".8"/>
+    <path d="M1500 742 l10 10 l24 -32" fill="none" stroke="#1d3554" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="1555" y="724" width="126" height="9" rx="5" fill="#effcff" opacity=".72"/>
+    <rect x="1555" y="750" width="86" height="8" rx="4" fill="#c6ebff" opacity=".58"/>
+  </g>
+
+  <g opacity=".58" filter="url(#shadow)">
+    <path d="M1124 892 C1216 798, 1340 790, 1422 892" fill="none" stroke="#ffe5aa" stroke-width="34" stroke-linecap="round"/>
+    <path d="M1312 904 C1394 816, 1510 815, 1592 905" fill="none" stroke="#dff7ff" stroke-width="30" stroke-linecap="round"/>
+    <path d="M1210 932 C1320 882, 1438 878, 1548 934" fill="none" stroke="#ffffff" stroke-opacity=".34" stroke-width="20" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(116 252)">
+    <text class="title" x="0" y="0">Lumi Social</text>
+    <text class="title" x="0" y="84">Intelligence</text>
+    <text class="sub" x="4" y="154">Agents that remember carefully,</text>
+    <text class="sub" x="4" y="196">read the room better,</text>
+    <text class="sub" x="4" y="238">and know when not to act.</text>
+    <rect x="4" y="304" width="520" height="2" fill="#f8d889" opacity=".75"/>
+    <text class="tiny" x="4" y="354">Governed reflection • Review • Consent • Repair</text>
+  </g>
+</svg>

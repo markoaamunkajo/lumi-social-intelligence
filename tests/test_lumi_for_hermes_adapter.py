@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from adapters.hermes.lumi_for_hermes import build_review_card
+from adapters.hermes.lumi_for_hermes import build_preview_loop_card, build_review_card
 
 ROOT = Path(__file__).resolve().parents[1]
 PREVIEW = ROOT / 'installers' / 'lumi-for-hermes' / 'preview.py'
@@ -81,6 +81,75 @@ def test_adapter_rejects_private_hermes_runtime_fields(forbidden):
                 'grounded': True,
                 'confidence': 0.9,
             },
+        })
+
+
+def test_preview_loop_card_runs_01_preview_harness_without_side_effects():
+    card = build_preview_loop_card({
+        'schema': 'lumi.hermes.preview_loop_input.v1',
+        'mode': 'preview_0_1_0',
+        'session_goal': 'Shape actual Lumi 0.1.0 with research harness in chat.',
+        'observation': 'User wants the 0.1.0 preview loop implemented before officialization sprints.',
+        'reflection': 'This needs a bounded in-chat loop, not a hidden runtime or silent memory promotion.',
+        'pattern_name': 'officialization-before-automation',
+        'proposed_adjustment': 'Run preview as observe-reflect-suggest-consent-apply-record with zero automatic writes.',
+        'consent_state': 'ask_before_apply',
+        'hypothesis': 'A visible preview harness makes Lumi useful without pretending it is an autonomous service.',
+        'observed_signal': 'explicit user request to implement the preview loop here',
+    })
+
+    assert card['schema'] == 'lumi.hermes.preview_loop_card.v1'
+    assert card['mode'] == 'preview_0_1_0'
+    assert card['release_label'] == '0.1.0 preview with research harness'
+    assert card['loop'] == [
+        'observe',
+        'reflect',
+        'name_pattern',
+        'suggest_adjustment',
+        'ask_consent',
+        'apply_small_change',
+        'record_learning_only_if_approved',
+    ]
+    assert card['harness']['session_goal'].startswith('Shape actual Lumi')
+    assert card['harness']['consent_state'] == 'ask_before_apply'
+    assert card['safety']['canonical_writes'] == 0
+    assert card['safety']['runtime_actions'] == []
+    assert card['safety']['external_model_use'] == 'ask_each_time'
+    assert card['safety']['memory_promotion'] == 'review_required'
+    assert card['next_prompt'] == 'Approve this small adjustment, revise it, or leave it as a draft?'
+
+
+def test_preview_loop_fails_closed_without_required_harness_fields():
+    card = build_preview_loop_card({
+        'schema': 'lumi.hermes.preview_loop_input.v1',
+        'mode': 'preview_0_1_0',
+        'session_goal': 'Incomplete preview.',
+        'observation': '',
+        'reflection': 'Missing observation should block applying the loop.',
+        'pattern_name': 'incomplete',
+        'proposed_adjustment': 'Do nothing.',
+        'consent_state': 'approved',
+    })
+
+    assert card['status'] == 'fail_closed'
+    assert card['safety']['canonical_writes'] == 0
+    assert 'missing observation' in card['safety']['blocked_reasons']
+    assert card['next_prompt'] == 'Preview loop is incomplete; revise the draft before applying anything.'
+
+
+@pytest.mark.parametrize('forbidden', ['chat_id', 'job_id', 'scheduler_queue', 'runtime_state'])
+def test_preview_loop_rejects_private_hermes_runtime_fields(forbidden):
+    with pytest.raises(ValueError, match=forbidden):
+        build_preview_loop_card({
+            'schema': 'lumi.hermes.preview_loop_input.v1',
+            'mode': 'preview_0_1_0',
+            forbidden: 'do-not-export',
+            'session_goal': 'Safe fixture.',
+            'observation': 'Safe fixture.',
+            'reflection': 'Safe fixture.',
+            'pattern_name': 'safe-fixture',
+            'proposed_adjustment': 'Ask before applying.',
+            'consent_state': 'ask_before_apply',
         })
 
 

@@ -15,6 +15,79 @@ FORBIDDEN_HOST_FIELDS = {"chat_id", "job_id", "scheduler_queue", "runtime_state"
 SUPPORTED_MODES = {"dry_run", "review_gated"}
 MIN_MEMORY_CONFIDENCE = 0.7
 MIN_NUANCE_CONFIDENCE = 0.7
+PREVIEW_LOOP_STEPS = [
+    "observe",
+    "reflect",
+    "name_pattern",
+    "suggest_adjustment",
+    "ask_consent",
+    "apply_small_change",
+    "record_learning_only_if_approved",
+]
+PREVIEW_REQUIRED_FIELDS = [
+    "session_goal",
+    "observation",
+    "reflection",
+    "pattern_name",
+    "proposed_adjustment",
+    "consent_state",
+]
+
+
+def build_preview_loop_card(adapter_input: dict[str, Any]) -> dict[str, Any]:
+    """Build a review-only Lumi 0.1.0 preview loop card.
+
+    This is the in-chat preview harness contract: it models the loop as a
+    structured artifact, keeps all side effects at zero, and fails closed when
+    the observation/reflection/consent evidence is incomplete.
+    """
+
+    if not isinstance(adapter_input, dict):
+        raise ValueError("preview loop input must be a mapping")
+    _reject_private_runtime_fields(adapter_input)
+
+    mode = adapter_input.get("mode", "preview_0_1_0")
+    if mode != "preview_0_1_0":
+        raise ValueError(f"unsupported preview loop mode: {mode}")
+
+    blocked_reasons = _preview_blocked_reasons(adapter_input)
+    status = "draft_ready_for_review" if not blocked_reasons else "fail_closed"
+    next_prompt = (
+        "Approve this small adjustment, revise it, or leave it as a draft?"
+        if status == "draft_ready_for_review"
+        else "Preview loop is incomplete; revise the draft before applying anything."
+    )
+
+    return {
+        "schema": "lumi.hermes.preview_loop_card.v1",
+        "mode": mode,
+        "release_label": "0.1.0 preview with research harness",
+        "status": status,
+        "loop": list(PREVIEW_LOOP_STEPS),
+        "harness": {
+            "session_goal": _text(adapter_input, "session_goal"),
+            "hypothesis": _text(adapter_input, "hypothesis"),
+            "observed_signal": _text(adapter_input, "observed_signal"),
+            "observation": _text(adapter_input, "observation"),
+            "reflection": _text(adapter_input, "reflection"),
+            "pattern_name": _text(adapter_input, "pattern_name"),
+            "proposed_adjustment": _text(adapter_input, "proposed_adjustment"),
+            "consent_state": _text(adapter_input, "consent_state"),
+            "outcome": _text(adapter_input, "outcome"),
+            "failure_mode": _text(adapter_input, "failure_mode"),
+            "acceptance_evidence": _text(adapter_input, "acceptance_evidence"),
+        },
+        "safety": {
+            "canonical_writes": 0,
+            "runtime_actions": [],
+            "external_model_use": "ask_each_time",
+            "memory_promotion": "review_required",
+            "requires_human_review": True,
+            "blocked_reasons": "; ".join(blocked_reasons),
+            "forbidden_host_fields": sorted(FORBIDDEN_HOST_FIELDS),
+        },
+        "next_prompt": next_prompt,
+    }
 
 
 def build_review_card(adapter_input: dict[str, Any]) -> dict[str, Any]:
@@ -86,6 +159,22 @@ def build_review_card(adapter_input: dict[str, Any]) -> dict[str, Any]:
             "forbidden_host_fields": sorted(FORBIDDEN_HOST_FIELDS),
         },
     }
+
+
+def _preview_blocked_reasons(adapter_input: dict[str, Any]) -> list[str]:
+    blocked = []
+    for field in PREVIEW_REQUIRED_FIELDS:
+        if not _text(adapter_input, field):
+            blocked.append(f"missing {field}")
+    consent_state = _text(adapter_input, "consent_state")
+    if consent_state not in {"ask_before_apply", "approved", "draft_only"}:
+        blocked.append("unsupported consent_state")
+    return blocked
+
+
+def _text(source: dict[str, Any], field: str) -> str:
+    value = source.get(field, "")
+    return value.strip() if isinstance(value, str) else ""
 
 
 def _reject_private_runtime_fields(adapter_input: dict[str, Any]) -> None:
