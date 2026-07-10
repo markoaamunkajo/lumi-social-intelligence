@@ -285,9 +285,10 @@ No private Presence internals, raw runs, memories, chat logs, scheduler/runtime 
 ### Deliverables
 
 - [ ] Tag `v0.1.0`.
-- [ ] Publish GitHub Release notes.
+- [x] Draft GitHub Release notes.
 - [ ] Attach release artifacts and checksums.
 - [ ] Verify release page and assets.
+- [x] Add non-mutating release-candidate plan that blocks dirty trees and existing tags.
 - [ ] Decide whether to keep repository private, publish a private release candidate, or switch the repository public.
 
 ### Exit criteria
