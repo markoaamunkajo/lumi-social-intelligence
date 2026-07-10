@@ -10,6 +10,7 @@ from typing import Any
 
 from core.presence.src.lumi_presence import decide_presence_move
 from lumi_social_intelligence.memory_provider import build_compatibility_packet
+from lumi_social_intelligence.outbound_emoji_presence import build_outbound_emoji_presence_record
 from lumi_social_intelligence.reaction_aware_presence import build_reaction_aware_presence_record
 
 FORBIDDEN_HOST_FIELDS = {
@@ -44,6 +45,27 @@ PREVIEW_REQUIRED_FIELDS = [
     "proposed_adjustment",
     "consent_state",
 ]
+
+
+def build_outbound_emoji_presence_card(adapter_input: dict[str, Any]) -> dict[str, Any]:
+    """Build a shadow-only Sprint 9 outbound emoji Presence card for Hermes.
+
+    This host adapter does not send Telegram reactions, mutate Hermes runtime,
+    or promote memory. It only translates explicit host-provided intent into the
+    shared Sprint 9 contract so a runtime can later review/deliver it safely.
+    """
+
+    if not isinstance(adapter_input, dict):
+        raise ValueError("outbound emoji presence input must be a mapping")
+    _reject_private_runtime_fields(adapter_input)
+    mode = adapter_input.get("mode", "outbound_emoji_presence_shadow")
+    if mode != "outbound_emoji_presence_shadow":
+        raise ValueError(f"unsupported outbound emoji presence mode: {mode}")
+    payload = dict(adapter_input)
+    payload["runtime_mode"] = "shadow_live_surface_candidate"
+    payload.setdefault("surface", "telegram")
+    return build_outbound_emoji_presence_record(payload)
+
 
 
 def build_reaction_presence_card(adapter_input: dict[str, Any]) -> dict[str, Any]:

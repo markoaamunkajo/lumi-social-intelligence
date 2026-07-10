@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from adapters.hermes.lumi_for_hermes import (
+    build_outbound_emoji_presence_card,
     build_preview_loop_card,
     build_reaction_presence_card,
     build_review_card,
@@ -189,6 +190,44 @@ def test_reaction_presence_card_rejects_private_runtime_fields(forbidden):
             'reaction': '👍',
             forbidden: 'do-not-export',
         })
+
+
+def test_outbound_emoji_presence_card_is_shadow_only_and_reaction_only():
+    card = build_outbound_emoji_presence_card({
+        'schema': 'lumi.hermes.outbound_emoji_presence_input.v1',
+        'mode': 'outbound_emoji_presence_shadow',
+        'surface': 'telegram',
+        'candidate_reaction': '❤️',
+        'target_message_role': 'user',
+        'why_now': 'warm moment where an emoji reaction is less intrusive than text',
+        'previous_outbound_reaction_turns_ago': 10,
+    })
+
+    assert card['schema'] == 'lumi.outbound_emoji_presence.record.v1'
+    assert card['stage'] == 'sprint_9_outbound_emoji_presence'
+    assert card['presence_intent']['gesture'] == 'add_emoji_reaction'
+    assert card['emoji_choice']['emoji'] == '❤️'
+    assert card['emoji_choice']['text_reply'] == ''
+    assert card['delivery_boundary']['runtime_mode'] == 'shadow_live_surface_candidate'
+    assert card['delivery_boundary']['delivery_mode'] == 'shadow_only'
+    assert card['delivery_boundary']['safe_to_claim_live_delivery'] is False
+    assert card['safety']['canonical_writes'] == 0
+    assert card['safety']['runtime_actions'] == []
+    assert card['safety']['telegram_reactions_sent'] == 0
+
+
+@pytest.mark.parametrize('forbidden', ['chat_id', 'token', 'api_key', 'scheduler_queue', 'runtime_state'])
+def test_outbound_emoji_presence_card_rejects_private_runtime_fields(forbidden):
+    with pytest.raises(ValueError, match=forbidden):
+        build_outbound_emoji_presence_card({
+            'schema': 'lumi.hermes.outbound_emoji_presence_input.v1',
+            'mode': 'outbound_emoji_presence_shadow',
+            'candidate_reaction': '👍',
+            'target_message_role': 'user',
+            'why_now': 'safe fixture',
+            forbidden: 'do-not-export',
+        })
+
 
 
 def test_preview_installer_outputs_inspectable_json_without_writes(tmp_path):

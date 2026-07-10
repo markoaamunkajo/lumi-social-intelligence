@@ -55,6 +55,7 @@ memory context → compatibility packet → nuance appraisal → Presence decisi
 - `dry_run` — produce a review card only.
 - `review_gated` — same zero-write behavior, but labeled for future human approval workflows.
 - `reaction_presence_shadow` — Sprint 8 reaction-aware Presence card from explicit host-provided reaction input; no Telegram API reads/sends and no memory promotion.
+- `outbound_emoji_presence_shadow` — Sprint 9 assistant-side emoji Presence card from explicit host-provided intent; reaction-only, throttled, shadow-only, and no memory promotion.
 
 Both regular modes currently have:
 
@@ -70,6 +71,18 @@ Reaction presence shadow mode additionally keeps:
 - `live_memory_writes: 0`
 - reaction-back replies tiny, optional, and throttled
 
+Outbound emoji presence shadow mode additionally keeps:
+
+- allowed emoji palette: `❤️ 😄 👍 👀 ✨`
+- `delivery_mode: shadow_only`
+- `safe_to_claim_live_delivery: false`
+- `telegram_reactions_sent: 0`
+- `telegram_messages_sent: 0`
+- `text_reply: ""`
+- `max_text_words: 0`
+- `durable_write: false`
+- `outbound_reaction_is_not_consent: true`
+
 ## Fail-closed behavior
 
 The adapter returns `status: fail_closed` and a `hold` Presence decision when confidence, grounding, or the why-now justification is insufficient.
@@ -80,6 +93,12 @@ The adapter rejects private Hermes runtime fields at the contract boundary:
 - `job_id`
 - `scheduler_queue`
 - `runtime_state`
+- `api_key`
+- `token`
+- `credential`
+- `delivery_channel`
+- `connection_string`
+- `password`
 
 ## Memory-provider boundary
 
