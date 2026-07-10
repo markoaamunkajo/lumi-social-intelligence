@@ -28,6 +28,18 @@ The command does **not** copy files. It only compares the candidate tree against
 `docs/module-release-gates.json` and blocks raw runs, private runtime state,
 logs, secrets, and files outside the public export allowlist.
 
+If the audit passes, generate a review-only copy plan:
+
+```bash
+python3 scripts/plan_module_export.py \
+  --audit-report /tmp/presence-export-audit.json \
+  --plan /tmp/presence-export-plan.json
+```
+
+The planner also does **not** copy files. It refuses blocked audit reports and
+writes the exact source-to-destination operations for human review before any
+future export command is allowed to mutate `core/`.
+
 ## Naming rule
 
 Public-facing docs should use the product names:
