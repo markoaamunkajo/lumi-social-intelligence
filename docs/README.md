@@ -37,8 +37,20 @@ python3 scripts/plan_module_export.py \
 ```
 
 The planner also does **not** copy files. It refuses blocked audit reports and
-writes the exact source-to-destination operations for human review before any
-future export command is allowed to mutate `core/`.
+writes the exact source-to-destination operations for human review.
+
+After reviewing the plan, apply it with the explicit mutation gate:
+
+```bash
+python3 scripts/apply_module_export.py \
+  --plan /tmp/presence-export-plan.json \
+  --apply-reviewed-plan
+```
+
+The apply command is the only mutating step. It refuses to run without
+`--apply-reviewed-plan`, rejects unsafe path escapes, copies only the reviewed
+plan operations, and writes `.lumi-export-manifest.json` beside the exported
+module files.
 
 ## Naming rule
 
