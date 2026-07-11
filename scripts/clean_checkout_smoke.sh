@@ -12,7 +12,7 @@ trap cleanup EXIT
 
 python3 scripts/build_release_artifacts.py --output-dir "$TMP_ROOT/artifacts" >/tmp/lumi-release-build-report.json
 
-test -f "$TMP_ROOT/artifacts/lumi-social-intelligence-0.2.0.zip"
+test -f "$TMP_ROOT/artifacts/lumi-social-intelligence-0.3.0.zip"
 test -f "$TMP_ROOT/artifacts/release-manifest.json"
 test -f "$TMP_ROOT/artifacts/SHA256SUMS"
 
@@ -27,10 +27,10 @@ artifact_dir = Path(sys.argv[1])
 manifest = json.loads((artifact_dir / 'release-manifest.json').read_text(encoding='utf-8'))
 assert manifest['private_material_findings'] == []
 assert manifest['canonical_writes'] == 0
-assert manifest['version'] == '0.2.0'
+assert manifest['version'] == '0.3.0'
 assert manifest['v02_demo_verification']['status'] == 'verified'
 assert 'installers/lumi-for-hermes/preview.py' in manifest['archive_members']
-assert 'docs/releases/v0.2.0.md' in manifest['archive_members']
+assert 'docs/releases/v0.3.0.md' in manifest['archive_members']
 assert 'docs/demos/v0.2-demo-side-by-side.md' in manifest['archive_members']
 
 archive = artifact_dir / manifest['archive']
