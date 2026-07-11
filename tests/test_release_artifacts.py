@@ -39,7 +39,7 @@ def test_release_artifact_builder_creates_archive_manifest_and_checksums(tmp_pat
     assert report['canonical_writes'] == 0
     assert report['output_dir'] == str(tmp_path)
 
-    archive = tmp_path / 'lumi-social-intelligence-0.3.0.zip'
+    archive = tmp_path / 'lumi-social-intelligence-0.4.0.zip'
     manifest = tmp_path / 'release-manifest.json'
     checksums = tmp_path / 'SHA256SUMS'
 
@@ -48,12 +48,14 @@ def test_release_artifact_builder_creates_archive_manifest_and_checksums(tmp_pat
     assert checksums.exists()
 
     manifest_data = json.loads(manifest.read_text(encoding='utf-8'))
-    assert manifest_data['version'] == '0.3.0'
+    assert manifest_data['version'] == '0.4.0'
     assert manifest_data['private_material_findings'] == []
     assert manifest_data['v02_demo_verification']['status'] == 'verified'
+    assert manifest_data['v04_real_controls_evidence']['status'] == 'verified'
+    assert manifest_data['v04_real_controls_evidence']['shadow_only'] is False
     assert 'installers/lumi-for-hermes/preview.py' in manifest_data['archive_members']
     assert 'adapters/hermes/lumi_for_hermes.py' in manifest_data['archive_members']
-    assert 'docs/releases/v0.3.0.md' in manifest_data['archive_members']
+    assert 'docs/releases/v0.4.0.md' in manifest_data['archive_members']
     assert 'docs/demos/v0.2-demo-side-by-side.md' in manifest_data['archive_members']
 
     with zipfile.ZipFile(archive) as zf:

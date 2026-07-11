@@ -24,8 +24,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.verify_v02_demo_package import verify as verify_v02_demo_package
+from scripts.build_v04_real_controls_evidence import build_receipt
 
-VERSION = '0.3.0'
+VERSION = '0.4.0'
 ARCHIVE_NAME = f'lumi-social-intelligence-{VERSION}.zip'
 FORBIDDEN_MEMBER_PATTERNS = (
     '.git/*',
@@ -51,6 +52,9 @@ REQUIRED_RELEASE_MEMBERS = (
     'docs/releases/v0.1.0.md',
     'docs/releases/v0.2.0.md',
     'docs/releases/v0.3.0.md',
+    'docs/releases/v0.4.0.md',
+    'docs/evidence/v0.4.0-real-controls-evidence.json',
+    'docs/evidence/v0.4.0-real-controls-evidence.md',
     'docs/demos/v0.2-demo-evidence.json',
     'docs/demos/v0.2-demo-side-by-side.json',
     'docs/demos/v0.2-demo-side-by-side.md',
@@ -148,6 +152,11 @@ def build(output_dir: Path) -> dict[str, object]:
     v02_demo_verification = verify_v02_demo_package()
     if v02_demo_verification['status'] != 'verified':
         raise SystemExit(f'v0.2 demo verification failed: {v02_demo_verification["findings"]}')
+    v04_real_controls_evidence = build_receipt()
+    if v04_real_controls_evidence['status'] != 'verified':
+        raise SystemExit('v0.4 real controls evidence failed verification')
+    if v04_real_controls_evidence['shadow_only'] is not False:
+        raise SystemExit('v0.4 real controls evidence must not be shadow-only')
 
     members = tracked_members
     missing_required = [member for member in REQUIRED_RELEASE_MEMBERS if member not in members]
@@ -174,6 +183,16 @@ def build(output_dir: Path) -> dict[str, object]:
             'canonical_writes': v02_demo_verification['canonical_writes'],
             'markdown_matches_json': v02_demo_verification['markdown_matches_json'],
             'native_outbound_reaction_delivery': v02_demo_verification['live_claim_boundary']['native_outbound_reaction_delivery'],
+        },
+        'v04_real_controls_evidence': {
+            'status': v04_real_controls_evidence['status'],
+            'mode': v04_real_controls_evidence['mode'],
+            'shadow_only': v04_real_controls_evidence['shadow_only'],
+            'canonical_writes': v04_real_controls_evidence['canonical_writes'],
+            'external_writes': v04_real_controls_evidence['external_writes'],
+            'private_runtime_reads': v04_real_controls_evidence['private_runtime_reads'],
+            'scheduler_mutations': v04_real_controls_evidence['scheduler_mutations'],
+            'claim_boundary': v04_real_controls_evidence['claim_boundary'],
         },
         'canonical_writes': 0,
     }

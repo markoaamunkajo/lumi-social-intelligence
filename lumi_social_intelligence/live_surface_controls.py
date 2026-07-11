@@ -1,11 +1,12 @@
-"""Public-safe Live Surface natural-language control shadow model.
+"""Public-safe Live Surface natural-language controls.
 
 This module demonstrates how a host can parse ordinary user phrasing into
 small, reversible Live Surface controls while keeping personal-data surfaces,
 external sends, scheduler/config changes, and durable memory behind review
-gates. It is shadow-only: it returns control records and acknowledgements, but
-does not read integrations, write runtime config, send messages, or mutate
-canonical memory.
+gates. The legacy shadow helper returns local evidence only. The v0.4 public path
+returns real review-gated control cards that can be applied by a host API while
+still refusing private integrations, external sends, scheduler/config changes,
+and durable memory writes unless an explicit reviewed surface exists.
 """
 from __future__ import annotations
 
@@ -103,7 +104,7 @@ def parse_control_intent(text: str, context: dict[str, Any] | None = None) -> di
         flags.append('durable_memory_review_required')
 
     if intent == 'unknown' and not flags:
-        if any(p in t for p in ('keep this fresh', 'keep an eye', 'keep this warm', 'keep this ready', 'watch the rain', 'keep it warm')):
+        if any(p in t for p in ('keep this fresh', 'keep an eye', 'keep this warm', 'keep this ready', 'watch the rain', 'keep it warm')) or ('keep' in t and 'warm' in t):
             intent = 'keep_fresh'
         elif any(p in t for p in ('only bring this up if i ask', 'only if i ask', 'when i ask', 'on request')):
             intent = 'only_on_request'
@@ -217,6 +218,82 @@ def render_control_ack(state: dict[str, Any]) -> str:
     if intent == 'set_boundary':
         return 'Got it — I’ll make that boundary quieter.'
     return 'I can do that — what should I adjust?'
+
+
+def _missing_surface_for_state(state: dict[str, Any], available_surfaces: tuple[str, ...]) -> str | None:
+    label = state.get('target', {}).get('label', '').lower()
+    surfaces = {surface.lower() for surface in available_surfaces}
+    if 'calendar' in label and 'calendar' not in surfaces:
+        return 'calendar'
+    if 'email' in label and 'email' not in surfaces:
+        return 'email'
+    return None
+
+
+def build_review_card(state: dict[str, Any], *, available_surfaces: tuple[str, ...] = ('conversation', 'weather')) -> dict[str, Any]:
+    missing_surface = _missing_surface_for_state(state, available_surfaces)
+    if missing_surface:
+        return {
+            'schema': 'lumi.live_surface.review_card.v1',
+            'decision': 'blocked_missing_surface',
+            'missing_surface': missing_surface,
+            'applyable_by_public_api': False,
+            'requires_private_runtime': False,
+            'review_required': True,
+            'allowed_operations': [],
+            'blocked_operations': [
+                f'{missing_surface}_read_without_explicit_surface',
+                'permission_expansion_without_review',
+            ],
+        }
+    if state.get('status') == 'active' and state.get('scope') == 'session':
+        return {
+            'schema': 'lumi.live_surface.review_card.v1',
+            'decision': 'ready_for_review',
+            'missing_surface': None,
+            'applyable_by_public_api': True,
+            'requires_private_runtime': False,
+            'review_required': False,
+            'allowed_operations': ['session_readiness_state'],
+            'blocked_operations': [],
+        }
+    return {
+        'schema': 'lumi.live_surface.review_card.v1',
+        'decision': 'pending_user_review',
+        'missing_surface': None,
+        'applyable_by_public_api': False,
+        'requires_private_runtime': False,
+        'review_required': True,
+        'allowed_operations': [],
+        'blocked_operations': sorted(state.get('safety_flags', [])),
+    }
+
+
+def apply_review_gated_control(
+    text: str,
+    *,
+    now: str,
+    source: str = 'public_review_gated_surface',
+    target_hint: str | None = None,
+    context: dict[str, Any] | None = None,
+    available_surfaces: tuple[str, ...] = ('conversation', 'weather'),
+) -> dict[str, Any]:
+    """Return a real public v0.4 review-gated Live Surface control card."""
+    state = build_control_state(text, now=now, source=source, target_hint=target_hint, context=context)
+    review_card = build_review_card(state, available_surfaces=available_surfaces)
+    ack = render_control_ack(state)
+    if review_card.get('decision') == 'blocked_missing_surface' and review_card.get('missing_surface') == 'calendar':
+        ack = "Calendar doesn't yet exist on Live Surface, would you like to add it?"
+    return {
+        'schema': 'lumi.live_surface.review_gated_control.v1',
+        'mode': 'review_gated',
+        'shadow_only': False,
+        'state': state,
+        'review_card': review_card,
+        'ack': ack,
+        'side_effects': dict(SIDE_EFFECTS_ZERO),
+        'claim_boundary': 'review-gated public Live Surface control; no autonomous external automation',
+    }
 
 
 def apply_control_shadow(text: str, *, now: str, source: str = 'host_shadow_surface', target_hint: str | None = None, context: dict[str, Any] | None = None) -> dict[str, Any]:

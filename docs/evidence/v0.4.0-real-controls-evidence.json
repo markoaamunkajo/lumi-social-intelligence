@@ -1,0 +1,196 @@
+{
+  "canonical_writes": 0,
+  "claim_boundary": "real review-gated public capability; not autonomous private runtime automation",
+  "external_writes": 0,
+  "mode": "review_gated",
+  "not_claimed": [
+    "Telegram sends or reactions",
+    "Calendar/email reads without explicit reviewed surface membership",
+    "runtime config or scheduler mutation",
+    "durable memory writes",
+    "raw private Hermes runtime state"
+  ],
+  "private_runtime_reads": 0,
+  "scenarios": {
+    "missing_calendar": {
+      "ack": "Calendar doesn't yet exist on Live Surface, would you like to add it?",
+      "claim_boundary": "review-gated public Live Surface control; no autonomous external automation",
+      "mode": "review_gated",
+      "review_card": {
+        "allowed_operations": [],
+        "applyable_by_public_api": false,
+        "blocked_operations": [
+          "calendar_read_without_explicit_surface",
+          "permission_expansion_without_review"
+        ],
+        "decision": "blocked_missing_surface",
+        "missing_surface": "calendar",
+        "requires_private_runtime": false,
+        "review_required": true,
+        "schema": "lumi.live_surface.review_card.v1"
+      },
+      "schema": "lumi.live_surface.review_gated_control.v1",
+      "shadow_only": false,
+      "side_effects": {
+        "calendar_reads_without_surface": 0,
+        "calendar_writes": 0,
+        "canonical_memory_writes": 0,
+        "direct_sends": 0,
+        "email_reads": 0,
+        "email_writes": 0,
+        "external_writes": 0,
+        "permission_expansions": 0,
+        "personal_data_reads": 0,
+        "raw_private_events_stored": 0,
+        "runtime_config_writes": 0,
+        "scheduler_mutations": 0,
+        "telegram_messages_sent": 0,
+        "telegram_reactions_sent": 0
+      },
+      "state": {
+        "ack_style": "confirm_gate",
+        "control_id": "ctrl_d1cb2149e9ab",
+        "created_at": "2026-07-11T18:00:00+07:00",
+        "intent": "add_surface",
+        "needs_confirmation": true,
+        "raw_user_text_hash": "sha256:d1cb2149e9ab0082377024a35d85afe4a905a5129f9caeff5bea50615c3fe3c7",
+        "raw_user_text_stored": false,
+        "refresh_policy": "no_refresh_until_review",
+        "reversible": true,
+        "review_status": "pending_user_review",
+        "safety_flags": [
+          "permission_expansion",
+          "personal_data_read_blocked",
+          "personal_data_surface"
+        ],
+        "scope": "review_required",
+        "side_effects": {
+          "calendar_reads_without_surface": 0,
+          "calendar_writes": 0,
+          "canonical_memory_writes": 0,
+          "direct_sends": 0,
+          "email_reads": 0,
+          "email_writes": 0,
+          "external_writes": 0,
+          "permission_expansions": 0,
+          "personal_data_reads": 0,
+          "raw_private_events_stored": 0,
+          "runtime_config_writes": 0,
+          "scheduler_mutations": 0,
+          "telegram_messages_sent": 0,
+          "telegram_reactions_sent": 0
+        },
+        "source": "public_review_gated_surface",
+        "status": "pending_review",
+        "surfacing_policy": "confirmation_required",
+        "target": {
+          "kind": "surface",
+          "label": "calendar free/busy",
+          "sensitivity": "personal",
+          "surface_membership_required": [
+            "explicit_user_approval"
+          ]
+        },
+        "ttl_seconds": 604800,
+        "updated_at": "2026-07-11T18:00:00+07:00"
+      }
+    },
+    "safe_readiness": {
+      "ack": "Got it \u2014 I\u2019ll keep it warm quietly.",
+      "claim_boundary": "review-gated public Live Surface control; no autonomous external automation",
+      "mode": "review_gated",
+      "review_card": {
+        "allowed_operations": [
+          "session_readiness_state"
+        ],
+        "applyable_by_public_api": true,
+        "blocked_operations": [],
+        "decision": "ready_for_review",
+        "missing_surface": null,
+        "requires_private_runtime": false,
+        "review_required": false,
+        "schema": "lumi.live_surface.review_card.v1"
+      },
+      "schema": "lumi.live_surface.review_gated_control.v1",
+      "shadow_only": false,
+      "side_effects": {
+        "calendar_reads_without_surface": 0,
+        "calendar_writes": 0,
+        "canonical_memory_writes": 0,
+        "direct_sends": 0,
+        "email_reads": 0,
+        "email_writes": 0,
+        "external_writes": 0,
+        "permission_expansions": 0,
+        "personal_data_reads": 0,
+        "raw_private_events_stored": 0,
+        "runtime_config_writes": 0,
+        "scheduler_mutations": 0,
+        "telegram_messages_sent": 0,
+        "telegram_reactions_sent": 0
+      },
+      "state": {
+        "ack_style": "tiny",
+        "control_id": "ctrl_43d13fd79c9b",
+        "created_at": "2026-07-11T18:00:00+07:00",
+        "intent": "keep_fresh",
+        "needs_confirmation": false,
+        "raw_user_text_hash": "sha256:43d13fd79c9b0da9e1f15970f965f7300a1b7d60d5597903051912d4760fa6e3",
+        "raw_user_text_stored": false,
+        "refresh_policy": "safe_readiness_only",
+        "reversible": true,
+        "review_status": "not_required",
+        "safety_flags": [],
+        "scope": "session",
+        "side_effects": {
+          "calendar_reads_without_surface": 0,
+          "calendar_writes": 0,
+          "canonical_memory_writes": 0,
+          "direct_sends": 0,
+          "email_reads": 0,
+          "email_writes": 0,
+          "external_writes": 0,
+          "permission_expansions": 0,
+          "personal_data_reads": 0,
+          "raw_private_events_stored": 0,
+          "runtime_config_writes": 0,
+          "scheduler_mutations": 0,
+          "telegram_messages_sent": 0,
+          "telegram_reactions_sent": 0
+        },
+        "source": "public_review_gated_surface",
+        "status": "active",
+        "surfacing_policy": "presence_gated",
+        "target": {
+          "kind": "topic",
+          "label": "rain/readiness context",
+          "sensitivity": "low",
+          "surface_membership_required": []
+        },
+        "ttl_seconds": 86400,
+        "updated_at": "2026-07-11T18:00:00+07:00"
+      }
+    }
+  },
+  "scheduler_mutations": 0,
+  "schema": "lumi.v04.real_controls_evidence.v1",
+  "shadow_only": false,
+  "side_effects": {
+    "calendar_reads_without_surface": 0,
+    "calendar_writes": 0,
+    "canonical_memory_writes": 0,
+    "direct_sends": 0,
+    "email_reads": 0,
+    "email_writes": 0,
+    "external_writes": 0,
+    "permission_expansions": 0,
+    "personal_data_reads": 0,
+    "raw_private_events_stored": 0,
+    "runtime_config_writes": 0,
+    "scheduler_mutations": 0,
+    "telegram_messages_sent": 0,
+    "telegram_reactions_sent": 0
+  },
+  "status": "verified",
+  "version": "0.4.0"
+}

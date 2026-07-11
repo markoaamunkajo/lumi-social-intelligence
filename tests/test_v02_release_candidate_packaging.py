@@ -71,9 +71,9 @@ def test_v02_release_notes_define_rc_boundary_and_demo_evidence():
 def test_v02_release_artifacts_package_tracked_demo_and_notes(tmp_path):
     report = run_release_builder(tmp_path)
 
-    assert report['version'] == '0.3.0'
+    assert report['version'] == '0.4.0'
     assert report['canonical_writes'] == 0
-    archive = tmp_path / 'lumi-social-intelligence-0.3.0.zip'
+    archive = tmp_path / 'lumi-social-intelligence-0.4.0.zip'
     manifest = tmp_path / 'release-manifest.json'
     checksums = tmp_path / 'SHA256SUMS'
     assert archive.exists()
@@ -82,16 +82,20 @@ def test_v02_release_artifacts_package_tracked_demo_and_notes(tmp_path):
 
     manifest_data = json.loads(manifest.read_text(encoding='utf-8'))
     assert manifest_data['schema'] == 'lumi.release_manifest.v1'
-    assert manifest_data['version'] == '0.3.0'
+    assert manifest_data['version'] == '0.4.0'
     assert manifest_data['private_material_findings'] == []
     assert manifest_data['canonical_writes'] == 0
     assert manifest_data['v02_demo_verification']['status'] == 'verified'
     assert manifest_data['v02_demo_verification']['canonical_writes'] == 0
+    assert manifest_data['v04_real_controls_evidence']['status'] == 'verified'
+    assert manifest_data['v04_real_controls_evidence']['shadow_only'] is False
 
     with zipfile.ZipFile(archive) as zf:
         names = set(zf.namelist())
     for required in [
         'docs/releases/v0.2.0.md',
+        'docs/releases/v0.4.0.md',
+        'docs/evidence/v0.4.0-real-controls-evidence.json',
         'scripts/verify_v02_demo_package.py',
         'docs/demos/v0.2-demo-evidence.json',
         'docs/demos/v0.2-demo-side-by-side.json',
@@ -109,7 +113,7 @@ def test_v02_release_artifacts_package_tracked_demo_and_notes(tmp_path):
     assert checksum_by_name[manifest.name] == hashlib.sha256(manifest.read_bytes()).hexdigest()
 
 
-def test_release_candidate_planner_defaults_to_v030():
+def test_release_candidate_planner_defaults_to_v040():
     script = (ROOT / 'scripts' / 'prepare_release_candidate.py').read_text(encoding='utf-8')
-    assert "default='v0.3.0'" in script
-    assert "docs/releases/v0.3.0.md" in script
+    assert "default='v0.4.0'" in script
+    assert "docs/releases/v0.4.0.md" in script
