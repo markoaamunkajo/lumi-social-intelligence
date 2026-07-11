@@ -25,7 +25,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.verify_v02_demo_package import verify as verify_v02_demo_package
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 ARCHIVE_NAME = f'lumi-social-intelligence-{VERSION}.zip'
 FORBIDDEN_MEMBER_PATTERNS = (
     '.git/*',
@@ -50,6 +50,7 @@ REQUIRED_RELEASE_MEMBERS = (
     'NOTICE.md',
     'docs/releases/v0.1.0.md',
     'docs/releases/v0.2.0.md',
+    'docs/releases/v0.3.0.md',
     'docs/demos/v0.2-demo-evidence.json',
     'docs/demos/v0.2-demo-side-by-side.json',
     'docs/demos/v0.2-demo-side-by-side.md',

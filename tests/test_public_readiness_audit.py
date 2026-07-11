@@ -55,12 +55,12 @@ def test_public_readiness_audit_report_passes_for_current_repo(tmp_path):
         assert checks[required]['status'] == 'pass'
 
     archive = checks['release_archive_scan']['details']
-    assert archive['version'] == '0.2.0'
+    assert archive['version'] == '0.3.0'
     assert archive['private_material_findings'] == []
     assert archive['canonical_writes'] == 0
     assert archive['v02_demo_verification']['status'] == 'verified'
     assert 'installers/lumi-for-hermes/preview.py' in archive['archive_members']
-    assert 'docs/releases/v0.2.0.md' in archive['archive_members']
+    assert 'docs/releases/v0.3.0.md' in archive['archive_members']
 
 
 def test_public_readiness_audit_cli_writes_json_report(tmp_path):

@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_NOTES = 'docs/releases/v0.2.0.md'
+DEFAULT_NOTES = 'docs/releases/v0.3.0.md'
 
 
 def _run(command: list[str]) -> str:
@@ -32,7 +32,18 @@ def _is_clean_status(status: str) -> bool:
 
 def _release_notes_summary(notes_path: Path) -> dict:
     text = notes_path.read_text(encoding='utf-8')
-    if notes_path.name == 'v0.2.0.md':
+    if notes_path.name == 'v0.3.0.md':
+        required = [
+            'shadow-only Live Surface natural-language controls',
+            'Observed / verified in this repository',
+            'Review-gated / no-write boundary',
+            'Not yet supported or not yet claimed live',
+            'Natural-language Live Surface control parsing',
+            'Calendar/email reads',
+            'blocked in shadow mode',
+            'canonical_memory_writes: 0',
+        ]
+    elif notes_path.name == 'v0.2.0.md':
         required = [
             'release-candidate',
             'Observed / verified in this repository',
@@ -64,7 +75,7 @@ def _release_notes_summary(notes_path: Path) -> dict:
     }
 
 
-def build_plan(tag: str = 'v0.2.0', notes_path: str = DEFAULT_NOTES) -> dict:
+def build_plan(tag: str = 'v0.3.0', notes_path: str = DEFAULT_NOTES) -> dict:
     blockers: list[str] = []
     status = _run(['git', 'status', '--short', '--branch'])
     branch = _run(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
@@ -107,7 +118,7 @@ def build_plan(tag: str = 'v0.2.0', notes_path: str = DEFAULT_NOTES) -> dict:
         'human_decision_required': [
             'confirm repository visibility before any public release',
             'inspect release artifacts and SHA256SUMS',
-            'decide whether to publish the v0.2.0 release-candidate or keep it as demo evidence only',
+            'decide whether to publish this release-candidate or keep it as demo evidence only',
         ],
         'safety': {
             'creates_tag': False,
@@ -121,7 +132,7 @@ def build_plan(tag: str = 'v0.2.0', notes_path: str = DEFAULT_NOTES) -> dict:
 
 def main(argv: list[str] | None = None) -> dict:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--tag', default='v0.2.0')
+    parser.add_argument('--tag', default='v0.3.0')
     parser.add_argument('--notes', default=DEFAULT_NOTES)
     parser.add_argument('--report', default='')
     args = parser.parse_args(argv)
