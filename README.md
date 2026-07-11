@@ -1,16 +1,16 @@
 # Lumi Social Intelligence
 
-**Memory, nuance, and presence for AI agents.**
+**Memory, nuance, presence, and review-gated Live Surface controls for AI agents.**
 
-Lumi Social Intelligence is the public-facing release doorway for three cooperating products:
+Lumi Social Intelligence is the public-facing release doorway for three cooperating products plus the Live Surface control layer that lets a host agent keep safe context warm without turning every available tool into an automatic side effect:
 
 ```text
-Lumi Layered Memory -> Nuances -> Presence
+Lumi Layered Memory -> Nuances -> Presence -> Live Surface controls
 ```
 
-It gives agent runtimes a governed reflection layer: adaptive memory, nuance, and presence with confidence scoring, contradiction handling, user approval, skill evaluation, review, consent, and repair.
+It gives agent runtimes a governed reflection layer: adaptive memory, nuance, and presence with confidence scoring, contradiction handling, user approval, skill evaluation, review, consent, repair, and explicit control boundaries for live host surfaces.
 
-> **Status:** private, review-gated `v0.1.0` preview release. The first **Lumi for Hermes** preview release exists as a non-mutating review-card surface; `v0.2` is a demo-evidence path, not a live automation claim. Native Telegram reactions are not claimed until verified by a real host-runtime run. The current development surface adds shadow-only Live Surface natural-language controls; native sends, Calendar/email reads, runtime mutations, and durable host writes are not claimed unless separately verified and approved.
+> **Status:** latest public release is **`v0.4.0`** — real, review-gated Live Surface natural-language controls. The original track began as a private, review-gated `v0.1.0` preview release; `v0.2` is a demo-evidence path, not a live automation claim. Native Telegram reactions are not claimed until verified by a real host-runtime run. `v0.4.0` claims review-gated public Live Surface control cards and zero-write safety counters, not autonomous private runtime automation.
 
 ## Why it exists
 
@@ -26,6 +26,49 @@ It is also built around a stricter self-improvement boundary:
 
 That means **Lumi Social Intelligence** is not an auto-personality-rewriter. It is a governed reflection layer around agent self-improvement: observations can be scored, contradicted, reviewed, rejected, repaired, or promoted with explicit approval. The agent does not freely rewrite its identity after every interaction.
 
+## Latest release: v0.4.0
+
+**v0.4.0** adds the first real public release of review-gated **Live Surface natural-language controls**.
+
+Live Surface is the capability boundary between “the assistant has safe, warmed context” and “the assistant is allowed to act.” It is designed for host integrations where a tool or surface may be present, but action still needs explicit review, membership, or approval.
+
+In this release, the public API can produce review-gated control cards for safe session-readiness state and fail closed when a requested personal-data surface is not available.
+
+### What v0.4.0 offers
+
+- Semantic Live Surface intent parsing — ordinary phrases, not magic keywords.
+- Safe session-readiness review cards.
+- Explicit `review_required` handling for personal-data surfaces.
+- Fail-closed behavior for unavailable surfaces such as Calendar.
+- Zero side-effect counters for the public control path:
+  - `canonical_writes: 0`
+  - `external_writes: 0`
+  - `private_runtime_reads: 0`
+  - `scheduler_mutations: 0`
+- A clearer split between warmed context and approved action.
+
+### What v0.4.0 does not claim
+
+- Autonomous private runtime automation.
+- Telegram sends or native reactions.
+- Calendar or email reads without explicit reviewed surface membership.
+- Runtime config or scheduler mutation.
+- Durable memory writes.
+- Raw private Hermes runtime access.
+
+See the [v0.4.0 release notes](docs/releases/v0.4.0.md) and [release evidence](docs/evidence/v0.4.0-real-controls-evidence.md).
+
+## The short concept
+
+Lumi Social Intelligence helps an assistant answer four questions before it does anything socially meaningful:
+
+1. **What do I know?** — governed memory and continuity.
+2. **What does this moment mean?** — nuance, uncertainty, consent, and contradiction.
+3. **Should I speak, wait, ask, or repair?** — presence and restraint.
+4. **Is this context only warm, or is action approved?** — Live Surface controls.
+
+The result is a safer path toward assistants that feel more socially aware without becoming unbounded, invasive, or weirdly overconfident.
+
 ## The product layer
 
 | Product | Role | Public promise |
@@ -33,6 +76,7 @@ That means **Lumi Social Intelligence** is not an auto-personality-rewriter. It 
 | **Lumi Layered Memory** | Context and continuity | Useful continuity. Clean boundaries. Receipts. No silent rewrites. |
 | **Nuances** | Contextual appraisal | Notice lightly. Invite clearly. Repair quickly. Leave room. |
 | **Presence** | Governed initiative | Soft presence. Clean boundaries. Quick repair. No stealing the feeling. |
+| **Live Surface controls** | Review-gated host readiness | Warm safe context. Fail closed. Separate readiness from action. |
 
 ### Lumi Layered Memory
 
@@ -45,6 +89,10 @@ Nuances reads the moment around the memory: corrections, consent signals, tone, 
 ### Presence
 
 Presence decides what the assistant should do with that understanding: speak, wait, ask, act, repair, or hold silence. Presence is where restraint becomes a feature, not a missing capability.
+
+### Live Surface controls
+
+Live Surface controls keep host capabilities legible and review-gated. They let a host say, for example, “keep this ready,” “only surface this if relevant,” or “add Calendar later,” while preserving hard boundaries around personal data, external sends, durable memory, scheduler changes, and runtime mutation.
 
 ## Repository role
 
@@ -64,6 +112,31 @@ Tested, reviewed, public-safe updates are promoted here as versioned releases. T
 The first planned distribution is **Lumi for Hermes**.
 
 A future **Lumi for OpenClaw** distribution may be explored after compatibility research, but this repository intentionally does **not** include OpenClaw folders, installers, or support claims yet.
+
+## Quickstart
+
+Run the local release gate:
+
+```bash
+./scripts/release_check.sh
+```
+
+Use the public Live Surface control API:
+
+```python
+from lumi_social_intelligence import apply_review_gated_control
+
+card = apply_review_gated_control(
+    "keep this ready for when I leave",
+    now="2026-07-11T17:00:00+07:00",
+    source="host_public_api",
+)
+
+print(card["ack"])
+print(card["side_effects"])
+```
+
+The API returns a review card plus side-effect counters. Safe readiness controls can be represented without private runtime reads or writes; personal-data requests fail closed until the surface is explicitly added and reviewed.
 
 ## Project layout
 
@@ -116,6 +189,13 @@ Every release must pass the local release gate:
 - [v0.2 Demo Index](docs/demos/v0.2-demo-index.md)
 - [v0.2 Demo Evidence Path](docs/demos/README.md)
 - [Live Surface natural-language controls](docs/live-surface-natural-language-controls.md)
+- [v0.4.0 release notes](docs/releases/v0.4.0.md)
+- [v0.4.0 release evidence](docs/evidence/v0.4.0-real-controls-evidence.md)
+
+## Find it
+
+- Repository: <https://github.com/markoaamunkajo/lumi-social-intelligence>
+- Latest release: <https://github.com/markoaamunkajo/lumi-social-intelligence/releases/tag/v0.4.0>
 
 ## License
 
