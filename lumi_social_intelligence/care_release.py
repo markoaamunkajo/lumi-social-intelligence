@@ -11,6 +11,7 @@ import re
 from typing import Any
 
 VERSION = "0.4.2"
+VERSION_043 = "0.4.3"
 
 SIDE_EFFECTS_ZERO = {
     "telegram_messages_sent_by_public_repo": 0,
@@ -113,6 +114,47 @@ def build_care_action_plan(
             "host_must_already_have_target": True,
             "must_not_guess_message_id": True,
             "private_runtime_state_not_exported": True,
+        },
+        "side_effects": dict(SIDE_EFFECTS_ZERO),
+    }
+
+
+def build_live_surface_autoresearch_readiness_plan(
+    *,
+    now: str,
+    source: str,
+    context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build the public-safe v0.4.3 Live Surface AutoResearch readiness plan.
+
+    This is a contract artifact, not a runtime bridge. It documents that small
+    research/concepting routes must be warm at Gateway start and must acknowledge
+    before any longer tool path, while keeping permission and side effects gated.
+    """
+    ctx = dict(context or {})
+    warmed = bool(ctx.get("autoresearch_small_investigation_ready", True))
+    return {
+        "schema": "lumi.v043.live_surface_autoresearch_readiness.v1",
+        "version": VERSION_043,
+        "created_at": now,
+        "source": source,
+        "status": "ready" if warmed else "blocked_not_warmed",
+        "gateway_startup_readiness": {
+            "contract": "all_live_surface_tools_ready_after_gateway_start",
+            "first_user_need_warmup_allowed": False,
+            "autoresearch_small_investigation_ready": warmed,
+            "startup_phase": "gateway_start",
+        },
+        "pre_tool_acknowledgement": {
+            "required_before_longer_tool_path": True,
+            "example": "I’m checking the small AutoResearch route now, then I’ll give you the concrete next step — no silent long wait.",
+            "visible_latency_contract": "no_silent_long_wait",
+        },
+        "review_gate": {
+            "readiness_is_not_permission": True,
+            "permission_expansion_allowed": False,
+            "durable_memory_write_allowed": False,
+            "runtime_promotion_allowed_by_public_repo": False,
         },
         "side_effects": dict(SIDE_EFFECTS_ZERO),
     }

@@ -10,7 +10,7 @@ Lumi Layered Memory -> Nuances -> Presence -> Live Surface
 
 It gives agent runtimes a governed reflection layer: adaptive memory, nuance, and presence with confidence scoring, contradiction handling, user approval, skill evaluation, review, consent, repair, and explicit control boundaries for live host surfaces.
 
-> **Status:** latest public release is **`v0.4.2`** — a care release for Live Surface instant reactions and Next-Step Care narration. The original track began as a private, review-gated `v0.1.0` preview release; `v0.2` is a demo-evidence path, not a live automation claim; `v0.4.0` added review-gated Live Surface control cards; `v0.4.1` verified the host-runtime native Telegram reaction payload contract. Native Telegram reactions are not claimed until verified by a real host-runtime run; `v0.4.2` packages the public-safe product contract: instant safe reactions must be deterministic, 0-tool-call host control-plane actions, while multi-step/uncertain work should narrate the next small step before acting.
+> **Status:** latest public release is **`v0.4.3`** — a Live Surface readiness release for Gateway-start warmed context, no first-use warmup in the user path, and explicit acknowledgement before longer AutoResearch/tool waits. The original track began as a private, review-gated `v0.1.0` preview release; `v0.2` is a demo-evidence path, not a live automation claim. Earlier releases added review-gated Live Surface controls (`v0.4.0`), host-runtime native Telegram reaction payload evidence (`v0.4.1`), and Next-Step Care for instant/safe actions (`v0.4.2`). Native Telegram reactions are not claimed until verified by a real host-runtime run.
 
 ## Why it exists
 
@@ -26,7 +26,24 @@ It is also built around a stricter self-improvement boundary:
 
 That means **Lumi Social Intelligence** is not an auto-personality-rewriter. It is a governed reflection layer around agent self-improvement: observations can be scored, contradicted, reviewed, rejected, repaired, or promoted with explicit approval. The agent does not freely rewrite its identity after every interaction.
 
-## Latest release: v0.4.2
+## Latest release: v0.4.3
+
+**v0.4.3** is a Live Surface readiness release for **Gateway-start warmed context** and **no silent long waits**.
+
+Live Surface is the capability boundary between “the assistant has safe, warmed context” and “the assistant is allowed to act.” v0.4.3 tightens the startup and latency rule: Live Surface tools that belong on the surface must be ready after Gateway start, not lazily warmed on the first user need, and longer AutoResearch/tool paths must acknowledge the concrete next step before the user is left waiting.
+
+### What v0.4.3 offers
+
+- A public-safe `build_live_surface_autoresearch_readiness_plan` contract.
+- Gateway-start readiness semantics:
+  - first user need warmup: forbidden
+  - readiness phase: `gateway_start`
+  - readiness is not permission to surface or mutate
+- Pre-tool acknowledgement for longer AutoResearch/tool paths.
+- Review-gated boundaries for memory writes, permission expansion, and runtime promotion.
+- The v0.4.2 Next-Step Care contract remains available for instant/safe host actions.
+
+## Previous release: v0.4.2
 
 **v0.4.2** is a care release for **Live Surface instant reactions** and **Next-Step Care**.
 
