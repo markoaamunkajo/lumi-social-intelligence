@@ -24,11 +24,17 @@ def test_v043_autoresearch_acknowledges_before_longer_tool_path_and_stays_review
         source="telegram",
     )
 
-    ack = plan["pre_tool_acknowledgement"]
-    assert ack["required_before_longer_tool_path"] is True
+    ack = plan["pre_tool_acknowledgement"]["longer_tool_path"]
+    assert ack["required_before_tool"] is True
     assert "checking the small AutoResearch route" in ack["example"]
     assert "then I’ll give you" in ack["example"]
     assert ack["visible_latency_contract"] == "no_silent_long_wait"
+
+    simple_ack = plan["pre_tool_acknowledgement"]["simple_familiar_check"]
+    assert simple_ack["required_before_tool"] is True
+    assert simple_ack["example"] == "Sure, let’s check."
+    assert simple_ack["tone"] == "warm_brief_human_handoff"
+    assert "over_explaining" in simple_ack["avoid"]
 
     gate = plan["review_gate"]
     assert gate["readiness_is_not_permission"] is True

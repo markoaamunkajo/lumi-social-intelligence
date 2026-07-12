@@ -146,9 +146,17 @@ def build_live_surface_autoresearch_readiness_plan(
             "startup_phase": "gateway_start",
         },
         "pre_tool_acknowledgement": {
-            "required_before_longer_tool_path": True,
-            "example": "I’m checking the small AutoResearch route now, then I’ll give you the concrete next step — no silent long wait.",
-            "visible_latency_contract": "no_silent_long_wait",
+            "simple_familiar_check": {
+                "required_before_tool": True,
+                "example": "Sure, let’s check.",
+                "tone": "warm_brief_human_handoff",
+                "avoid": "over_explaining_read_only_or_bounded_mechanics_unless_safety_or_scope_needs_it",
+            },
+            "longer_tool_path": {
+                "required_before_tool": True,
+                "example": "I’m checking the small AutoResearch route now, then I’ll give you the concrete next step — no silent long wait.",
+                "visible_latency_contract": "no_silent_long_wait",
+            },
         },
         "review_gate": {
             "readiness_is_not_permission": True,
