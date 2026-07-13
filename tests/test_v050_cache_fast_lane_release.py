@@ -144,3 +144,14 @@ def test_v050_release_notes_state_the_contract_and_public_boundary():
     assert "does **not** ship the private Hermes runtime adapter" in text
     assert "canonical_writes: 0" in text
     assert "private_runtime_reads_by_public_repo: 0" in text
+
+
+def test_readme_promotes_v050_and_links_its_public_release_material():
+    text = (ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert "latest public release is **`v0.5.0`**" in text
+    assert "## Latest release: v0.5.0" in text
+    assert "[v0.5.0 release notes](docs/releases/v0.5.0.md)" in text
+    assert "[v0.5.0 cache-backed fast-lane evidence](docs/evidence/v0.5.0-cache-fast-lane-evidence.md)" in text
+    assert "releases/tag/v0.5.0" in text
+    assert "releases/tag/v0.4.3" not in text
