@@ -19,14 +19,14 @@
     "eligibility": {
       "authorized_sender_required": true,
       "fresh_valid_cache_required": true,
-      "platform_scope": "telegram_direct_message",
-      "supported_intent_scope": "weather_or_scooter_departure"
+      "host_approved_live_surface_capability_required": true,
+      "platform_scope": "telegram_direct_message"
     },
     "fallback_action": null,
     "fallback_contract": {
       "on_missing_invalid_or_stale_cache": "normal_full_dispatch",
+      "on_unapproved_or_missing_live_surface_capability": "normal_full_dispatch",
       "on_unauthorized_sender": "normal_auth_or_pairing_flow",
-      "on_unsupported_or_missing_intent": "normal_full_dispatch",
       "on_unsupported_platform_or_non_direct_message": "normal_full_dispatch"
     },
     "fallback_reason": null,
@@ -50,7 +50,7 @@
   "not_claimed": [
     "The public repository reads a host cache or private runtime state",
     "The public repository sends a Telegram reply",
-    "A fast lane is available to group chats, unauthorized users, or unrelated intents",
+    "A fast lane is available without host approval, to group chats, or to unauthorized users",
     "A stale, invalid, or missing cache entry may be used for an instant reply"
   ],
   "public_boundary": {

@@ -10,7 +10,7 @@ Lumi Layered Memory -> Nuances -> Presence -> Live Surface
 
 It gives agent runtimes a governed reflection layer: adaptive memory, nuance, and presence with confidence scoring, contradiction handling, user approval, skill evaluation, review, consent, repair, and explicit control boundaries for live host surfaces.
 
-> **Status:** latest public release is **`v0.5.0`** — a cache-backed Live Surface fast-lane contract: only an authorized Telegram DM with a fresh, valid host-local weather or scooter-departure cache may skip agent work; every uncertainty falls through to normal dispatch. The original track began as a private, review-gated `v0.1.0` preview release; `v0.2` is a demo-evidence path, not a live automation claim. Earlier releases added review-gated Live Surface controls (`v0.4.0`), host-runtime native Telegram reaction payload evidence (`v0.4.1`), Next-Step Care for instant/safe actions (`v0.4.2`), and Gateway-start Live Surface readiness (`v0.4.3`). Native Telegram reactions are not claimed until verified by a real host-runtime run.
+> **Status:** latest public release is **`v0.5.0`** — a cache-backed Live Surface promotion contract: an authorized Telegram DM with a host-approved, fresh, valid local capability may return a bounded result without opening the agent/tool path; every uncertainty falls through to normal dispatch. The original track began as a private, review-gated `v0.1.0` preview release; `v0.2` is a demo-evidence path, not a live automation claim. Earlier releases added review-gated Live Surface controls (`v0.4.0`), host-runtime native Telegram reaction payload evidence (`v0.4.1`), Next-Step Care for instant/safe actions (`v0.4.2`), and Gateway-start Live Surface readiness (`v0.4.3`). Native Telegram reactions are not claimed until verified by a real host-runtime run.
 
 ## Why it exists
 
@@ -28,18 +28,18 @@ That means **Lumi Social Intelligence** is not an auto-personality-rewriter. It 
 
 ## Latest release: v0.5.0
 
-**v0.5.0** is a cache-backed fast-lane release for **tiny, authorized weather or scooter-departure replies**—instant only when the answer is already safe, fresh, local, and bounded.
+**v0.5.0** is a cache-backed fast-lane release that lets a host **promote a narrowly approved tool capability to Live Surface**—instant only when the result is already safe, fresh, local, and bounded.
 
-Live Surface is the capability boundary between “the assistant has safe, warmed context” and “the assistant is allowed to act.” v0.5.0 adds a deliberately narrow public-safe contract for a private host adapter: an authorized Telegram DM may receive a direct reply only for a supported weather or scooter-departure intent and only when a valid host-local cache is no more than 12 hours old. The fast lane makes no network request, opens no agent session or compression path, permits zero agent tool calls, and retains normal adapter delivery. Missing, stale, invalid, unsupported, or unauthorized cases fail closed to normal dispatch.
+Live Surface is the capability boundary between “the assistant has safe, warmed context” and “the assistant is allowed to act.” v0.5.0 adds a deliberately narrow public-safe contract for a private host adapter: a host may promote an approved tool capability to Live Surface, allowing an authorized Telegram DM to receive a direct local result only when a valid host-local cache is no more than 12 hours old. The fast lane makes no network request, opens no agent session or compression path, permits zero agent tool calls, and retains normal adapter delivery. Missing, stale, invalid, unapproved, or unauthorized cases fail closed to normal dispatch.
 
 ### What v0.5.0 offers
 
 - A public-safe `build_cache_backed_fast_lane_plan` contract for the private host adapter.
 - Authorization-before-reply semantics for Telegram direct messages only.
-- Bounded eligibility: only `weather_or_scooter_departure` with a fresh, valid host-local cache.
+- Bounded eligibility: only a host-approved Live Surface capability with a fresh, valid host-local cache.
 - A 12-hour cache freshness ceiling, no network I/O, no raw-cache export, no agent session/compression, and zero agent tool calls.
 - A 4096-character reply cap using the host's normal delivery adapter.
-- Named normal-dispatch fallbacks for unauthorized senders, non-DM traffic, unsupported intent, and missing/invalid/stale cache.
+- Named normal-dispatch fallbacks for unauthorized senders, non-DM traffic, unapproved capabilities, and missing/invalid/stale cache.
 - Explicit public boundaries: this repository does not ship the private adapter, read private cache content, send Telegram messages, or promote runtime behavior.
 
 ## Previous release: v0.4.3

@@ -29,7 +29,7 @@ def build_receipt() -> dict[str, Any]:
         context={
             "authorized_sender": True,
             "is_direct_message": True,
-            "supported_intent": "weather_or_scooter_departure",
+            "host_approved_live_surface_capability": True,
             "cache_fresh": True,
             "cache_valid": True,
         },
@@ -64,7 +64,7 @@ def build_receipt() -> dict[str, Any]:
         "not_claimed": [
             "The public repository reads a host cache or private runtime state",
             "The public repository sends a Telegram reply",
-            "A fast lane is available to group chats, unauthorized users, or unrelated intents",
+            "A fast lane is available without host approval, to group chats, or to unauthorized users",
             "A stale, invalid, or missing cache entry may be used for an instant reply",
         ],
     }
@@ -84,7 +84,7 @@ def build_markdown(receipt: dict[str, Any]) -> str:
 **Principle:** {receipt['release_principle']}<br>
 **Claim boundary:** {receipt['claim_boundary']}
 
-v0.5.0 defines a deliberately narrow fast lane for a private host adapter. It may use a previously refreshed local weather/departure cache to reply immediately only after authorization and only for the bounded Telegram DM intent. The public repository does not ship that adapter or the cache.
+v0.5.0 defines a deliberately narrow promotion path for a private host adapter. A host may promote an approved, cache-backed tool capability to Live Surface so an eligible request can receive a local reply without opening the agent/tool path. The public repository does not ship that adapter or the cache.
 
 ## Eligibility and cache boundary
 
@@ -92,7 +92,7 @@ v0.5.0 defines a deliberately narrow fast lane for a private host adapter. It ma
 |---|---|
 | Authorized sender required | `{eligibility['authorized_sender_required']}` |
 | Platform scope | `{eligibility['platform_scope']}` |
-| Supported intent scope | `{eligibility['supported_intent_scope']}` |
+| Host-approved Live Surface capability required | `{eligibility['host_approved_live_surface_capability_required']}` |
 | Fresh + valid cache required | `{eligibility['fresh_valid_cache_required']}` |
 | Cache location | `{cache['cache_read_location']}` |
 | Network I/O allowed | `{cache['network_io_allowed']}` |
@@ -109,13 +109,13 @@ v0.5.0 defines a deliberately narrow fast lane for a private host adapter. It ma
 
 ## Fail closed
 
-**Falls through normally** when the sender is unauthorized, the platform is not a Telegram DM, the intent is unsupported, or the local cache is missing, invalid, or stale.
+**Falls through normally** when the sender is unauthorized, the platform is not a Telegram DM, the capability is not host-approved, or the local cache is missing, invalid, or stale.
 
 | Condition | Required host action |
 |---|---|
 | Unauthorized sender | `{fallback['on_unauthorized_sender']}` |
 | Non-DM / unsupported platform | `{fallback['on_unsupported_platform_or_non_direct_message']}` |
-| Unsupported or missing intent | `{fallback['on_unsupported_or_missing_intent']}` |
+| Unapproved or missing Live Surface capability | `{fallback['on_unapproved_or_missing_live_surface_capability']}` |
 | Missing, invalid, or stale cache | `{fallback['on_missing_invalid_or_stale_cache']}` |
 
 ## Side-effect counters

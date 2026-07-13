@@ -16,7 +16,7 @@ def test_v050_cache_backed_fast_lane_is_authorized_local_and_bounded():
         context={
             "authorized_sender": True,
             "is_direct_message": True,
-            "supported_intent": "weather_or_scooter_departure",
+            "host_approved_live_surface_capability": True,
             "cache_fresh": True,
             "cache_valid": True,
         },
@@ -29,7 +29,7 @@ def test_v050_cache_backed_fast_lane_is_authorized_local_and_bounded():
     assert plan["eligibility"] == {
         "authorized_sender_required": True,
         "platform_scope": "telegram_direct_message",
-        "supported_intent_scope": "weather_or_scooter_departure",
+        "host_approved_live_surface_capability_required": True,
         "fresh_valid_cache_required": True,
     }
     assert plan["cache_contract"] == {
@@ -46,7 +46,7 @@ def test_v050_cache_backed_fast_lane_is_authorized_local_and_bounded():
         "normal_delivery_adapter_required": True,
     }
     assert plan["fallback_contract"]["on_unauthorized_sender"] == "normal_auth_or_pairing_flow"
-    assert plan["fallback_contract"]["on_unsupported_or_missing_intent"] == "normal_full_dispatch"
+    assert plan["fallback_contract"]["on_unapproved_or_missing_live_surface_capability"] == "normal_full_dispatch"
     assert plan["fallback_contract"]["on_missing_invalid_or_stale_cache"] == "normal_full_dispatch"
     assert plan["side_effects"] == {
         "telegram_messages_sent_by_public_repo": 0,
@@ -60,11 +60,11 @@ def test_v050_fast_lane_falls_through_when_any_eligibility_condition_is_missing(
     from lumi_social_intelligence.care_release import build_cache_backed_fast_lane_plan
 
     for context, reason, fallback in [
-        ({"authorized_sender": False, "is_direct_message": True, "supported_intent": "weather_or_scooter_departure", "cache_fresh": True, "cache_valid": True}, "unauthorized_sender", "normal_auth_or_pairing_flow"),
-        ({"authorized_sender": True, "is_direct_message": False, "supported_intent": "weather_or_scooter_departure", "cache_fresh": True, "cache_valid": True}, "unsupported_platform_or_non_direct_message", "normal_full_dispatch"),
-        ({"authorized_sender": True, "is_direct_message": True, "supported_intent": "other", "cache_fresh": True, "cache_valid": True}, "unsupported_or_missing_intent", "normal_full_dispatch"),
-        ({"authorized_sender": True, "is_direct_message": True, "supported_intent": "weather_or_scooter_departure", "cache_fresh": False, "cache_valid": True}, "missing_invalid_or_stale_cache", "normal_full_dispatch"),
-        ({"authorized_sender": True, "is_direct_message": True, "supported_intent": "weather_or_scooter_departure", "cache_fresh": True, "cache_valid": False}, "missing_invalid_or_stale_cache", "normal_full_dispatch"),
+        ({"authorized_sender": False, "is_direct_message": True, "host_approved_live_surface_capability": True, "cache_fresh": True, "cache_valid": True}, "unauthorized_sender", "normal_auth_or_pairing_flow"),
+        ({"authorized_sender": True, "is_direct_message": False, "host_approved_live_surface_capability": True, "cache_fresh": True, "cache_valid": True}, "unsupported_platform_or_non_direct_message", "normal_full_dispatch"),
+        ({"authorized_sender": True, "is_direct_message": True, "host_approved_live_surface_capability": False, "cache_fresh": True, "cache_valid": True}, "unapproved_or_missing_live_surface_capability", "normal_full_dispatch"),
+        ({"authorized_sender": True, "is_direct_message": True, "host_approved_live_surface_capability": True, "cache_fresh": False, "cache_valid": True}, "missing_invalid_or_stale_cache", "normal_full_dispatch"),
+        ({"authorized_sender": True, "is_direct_message": True, "host_approved_live_surface_capability": True, "cache_fresh": True, "cache_valid": False}, "missing_invalid_or_stale_cache", "normal_full_dispatch"),
     ]:
         plan = build_cache_backed_fast_lane_plan(
             now="2026-07-13T16:00:00+07:00",
@@ -142,6 +142,9 @@ def test_v050_release_notes_state_the_contract_and_public_boundary():
     assert "Falls through normally" in text
     assert "12-hour cache freshness ceiling" in text
     assert "does **not** ship the private Hermes runtime adapter" in text
+    assert "promote an approved tool capability to Live Surface" in text
+    assert "weather" not in text.lower()
+    assert "scooter" not in text.lower()
     assert "canonical_writes: 0" in text
     assert "private_runtime_reads_by_public_repo: 0" in text
 
@@ -155,3 +158,16 @@ def test_readme_promotes_v050_and_links_its_public_release_material():
     assert "[v0.5.0 cache-backed fast-lane evidence](docs/evidence/v0.5.0-cache-fast-lane-evidence.md)" in text
     assert "releases/tag/v0.5.0" in text
     assert "releases/tag/v0.4.3" not in text
+    assert "promote a narrowly approved tool capability to Live Surface" in text
+    assert "weather or scooter-departure" not in text.lower()
+
+
+def test_v050_generated_evidence_uses_capability_promotion_language_without_examples():
+    json_text = (ROOT / "docs/evidence/v0.5.0-cache-fast-lane-evidence.json").read_text(encoding="utf-8").lower()
+    markdown_text = (ROOT / "docs/evidence/v0.5.0-cache-fast-lane-evidence.md").read_text(encoding="utf-8").lower()
+
+    assert "host_approved_live_surface_capability_required" in json_text
+    assert "host-approved live surface capability required" in markdown_text
+    for text in [json_text, markdown_text]:
+        assert "weather" not in text
+        assert "scooter" not in text

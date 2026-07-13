@@ -193,15 +193,16 @@ def build_cache_backed_fast_lane_plan(
 ) -> dict[str, Any]:
     """Build the public-safe v0.5.0 cache-backed fast-lane contract.
 
-    The public package deliberately receives only host-verified booleans and an
-    intent label. It never opens a cache, resolves a chat, sends a reply, or
-    invokes a network/tool path. A host may use the ready result only after it
-    has authorized the sender and validated a local, fresh cache entry.
+    The public package deliberately receives only host-verified eligibility
+    signals. It never opens a cache, resolves a chat, sends a reply, or invokes
+    a network/tool path. A host may use the ready result only after it has
+    explicitly approved the promoted Live Surface capability, authorized the
+    sender, and validated a local, fresh cache entry.
     """
     ctx = dict(context or {})
     direct_message = source == "telegram" and bool(ctx.get("is_direct_message"))
     authorized = bool(ctx.get("authorized_sender"))
-    supported_intent = ctx.get("supported_intent") == "weather_or_scooter_departure"
+    promoted_capability = bool(ctx.get("host_approved_live_surface_capability"))
     cache_ready = bool(ctx.get("cache_fresh")) and bool(ctx.get("cache_valid"))
 
     if not authorized:
@@ -212,9 +213,9 @@ def build_cache_backed_fast_lane_plan(
         status = "fallback_full_dispatch"
         fallback_reason = "unsupported_platform_or_non_direct_message"
         fallback_action = "normal_full_dispatch"
-    elif not supported_intent:
+    elif not promoted_capability:
         status = "fallback_full_dispatch"
-        fallback_reason = "unsupported_or_missing_intent"
+        fallback_reason = "unapproved_or_missing_live_surface_capability"
         fallback_action = "normal_full_dispatch"
     elif not cache_ready:
         status = "fallback_full_dispatch"
@@ -235,7 +236,7 @@ def build_cache_backed_fast_lane_plan(
         "eligibility": {
             "authorized_sender_required": True,
             "platform_scope": "telegram_direct_message",
-            "supported_intent_scope": "weather_or_scooter_departure",
+            "host_approved_live_surface_capability_required": True,
             "fresh_valid_cache_required": True,
         },
         "cache_contract": {
@@ -254,7 +255,7 @@ def build_cache_backed_fast_lane_plan(
         "fallback_contract": {
             "on_unauthorized_sender": "normal_auth_or_pairing_flow",
             "on_unsupported_platform_or_non_direct_message": "normal_full_dispatch",
-            "on_unsupported_or_missing_intent": "normal_full_dispatch",
+            "on_unapproved_or_missing_live_surface_capability": "normal_full_dispatch",
             "on_missing_invalid_or_stale_cache": "normal_full_dispatch",
         },
         "fallback_reason": fallback_reason,
