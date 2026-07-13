@@ -16,6 +16,10 @@ def test_v043_autoresearch_readiness_is_gateway_start_ready_without_first_use_wa
     assert readiness["startup_phase"] == "gateway_start"
     assert readiness["first_user_need_warmup_allowed"] is False
     assert readiness["autoresearch_small_investigation_ready"] is True
+    assert readiness["host_prefill_messages_file_required"] is True
+    assert readiness["host_prefill_messages_file_config_key"] == "prefill_messages_file"
+    assert readiness["host_prefill_messages_file_default"] == "~/.hermes/state/live_surface_prefill_messages.json"
+    assert "first user need" in readiness["host_prefill_messages_file_purpose"]
 
 
 def test_v043_autoresearch_acknowledges_before_longer_tool_path_and_stays_review_gated():

@@ -11,6 +11,10 @@
     "autoresearch_small_investigation_ready": true,
     "contract": "all_live_surface_tools_ready_after_gateway_start",
     "first_user_need_warmup_allowed": false,
+    "host_prefill_messages_file_config_key": "prefill_messages_file",
+    "host_prefill_messages_file_default": "~/.hermes/state/live_surface_prefill_messages.json",
+    "host_prefill_messages_file_purpose": "prime public-safe Live Surface behaviour before the first user need",
+    "host_prefill_messages_file_required": true,
     "startup_phase": "gateway_start"
   },
   "not_claimed": [
@@ -58,6 +62,10 @@
       "autoresearch_small_investigation_ready": true,
       "contract": "all_live_surface_tools_ready_after_gateway_start",
       "first_user_need_warmup_allowed": false,
+      "host_prefill_messages_file_config_key": "prefill_messages_file",
+      "host_prefill_messages_file_default": "~/.hermes/state/live_surface_prefill_messages.json",
+      "host_prefill_messages_file_purpose": "prime public-safe Live Surface behaviour before the first user need",
+      "host_prefill_messages_file_required": true,
       "startup_phase": "gateway_start"
     },
     "pre_tool_acknowledgement": {
@@ -108,6 +116,8 @@
     "emoji_reaction_not_acknowledgement": true,
     "expensive_tool_path_switches_to_writing": true,
     "first_user_need_warmup_allowed": false,
+    "host_prefill_messages_file_config_key": "prefill_messages_file",
+    "host_prefill_messages_file_required": true,
     "longer_tool_path_ack_medium": "text_reply",
     "longer_tool_path_ack_required": true,
     "reactions_only_for_instant_zero_tool_call_lane": true

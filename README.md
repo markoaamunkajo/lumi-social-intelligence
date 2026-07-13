@@ -35,6 +35,7 @@ Live Surface is the capability boundary between “the assistant has safe, warme
 ### What v0.4.3 offers
 
 - A public-safe `build_live_surface_autoresearch_readiness_plan` contract.
+- A host startup binding requirement for `prefill_messages_file: ~/.hermes/state/live_surface_prefill_messages.json`, so Live Surface prefill context is ready before first user need.
 - Gateway-start readiness semantics:
   - first user need warmup: forbidden
   - readiness phase: `gateway_start`
@@ -208,11 +209,13 @@ Every release must pass the local release gate:
 - [Live Surface natural-language controls](docs/live-surface-natural-language-controls.md)
 - [v0.4.0 release notes](docs/releases/v0.4.0.md)
 - [v0.4.0 release evidence](docs/evidence/v0.4.0-real-controls-evidence.md)
+- [v0.4.3 release notes](docs/releases/v0.4.3.md)
+- [v0.4.3 Live Surface readiness evidence](docs/evidence/v0.4.3-live-surface-readiness-evidence.md)
 
 ## Find it
 
 - Repository: <https://github.com/markoaamunkajo/lumi-social-intelligence>
-- Latest release: <https://github.com/markoaamunkajo/lumi-social-intelligence/releases/tag/v0.4.2>
+- Latest release: <https://github.com/markoaamunkajo/lumi-social-intelligence/releases/tag/v0.4.3>
 
 ## License
 

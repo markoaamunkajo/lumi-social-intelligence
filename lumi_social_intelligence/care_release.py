@@ -144,6 +144,10 @@ def build_live_surface_autoresearch_readiness_plan(
             "first_user_need_warmup_allowed": False,
             "autoresearch_small_investigation_ready": warmed,
             "startup_phase": "gateway_start",
+            "host_prefill_messages_file_required": True,
+            "host_prefill_messages_file_config_key": "prefill_messages_file",
+            "host_prefill_messages_file_default": "~/.hermes/state/live_surface_prefill_messages.json",
+            "host_prefill_messages_file_purpose": "prime public-safe Live Surface behaviour before the first user need",
         },
         "pre_tool_acknowledgement": {
             "simple_familiar_check": {

@@ -42,6 +42,8 @@ def build_receipt() -> dict[str, Any]:
         "emoji_reaction_policy": emoji_policy,
         "verified_invariants": {
             "first_user_need_warmup_allowed": plan["gateway_startup_readiness"]["first_user_need_warmup_allowed"],
+            "host_prefill_messages_file_required": plan["gateway_startup_readiness"]["host_prefill_messages_file_required"],
+            "host_prefill_messages_file_config_key": plan["gateway_startup_readiness"]["host_prefill_messages_file_config_key"],
             "longer_tool_path_ack_required": ack["longer_tool_path"]["required_before_tool"],
             "longer_tool_path_ack_medium": ack["longer_tool_path"]["required_medium"],
             "emoji_reaction_not_acknowledgement": ack["longer_tool_path"]["emoji_reaction_is_not_acknowledgement"],
@@ -90,6 +92,9 @@ v0.4.3 closes the preview gap between instant reactions and expensive tool paths
 | Startup phase | `{gateway['startup_phase']}` |
 | First-use warmup allowed | `{gateway['first_user_need_warmup_allowed']}` |
 | AutoResearch small investigation ready | `{gateway['autoresearch_small_investigation_ready']}` |
+| Host prefill messages file required | `{gateway['host_prefill_messages_file_required']}` |
+| Host config key | `{gateway['host_prefill_messages_file_config_key']}` |
+| Default prefill file | `{gateway['host_prefill_messages_file_default']}` |
 
 ## Pre-tool acknowledgement
 
