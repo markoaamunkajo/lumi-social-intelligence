@@ -87,17 +87,29 @@ Define how Lumi operates inside chat: state labels, consent language, when to sp
 
 Acceptance: a real conversation can run through preview mode without confusion about what is active.
 
+The review-only protocol requires a visible `interaction_policy` with non-empty:
+
+```text
+speak_when
+stay_quiet_when
+consent_language
+```
+
 ### Sprint 3 — Signal / Reflection Schema
 
 Define what counts as a signal, reflection, contradiction, confidence, consent, and adjustment.
 
 Acceptance: Nuances can steer current work without silently becoming durable memory or shared product truth.
 
+The record must declare `nuance_handling`: current-work use is review-only steering; durable-memory promotion and shared-product truth are prohibited in this preview contract.
+
 ### Sprint 4 — Consent, Memory Boundary, and Safety
 
 Prevent silent memory promotion, private-thought extraction, credential leaks, identity drift, or automated public actions.
 
 Acceptance: every durable learning has approval, provenance, and deletion/ignore paths.
+
+The review artifact must carry `durable_learning_controls` for explicit approval, provenance, a human-authoritative deletion path, and an ignore/discard path. It does not authorize a durable write.
 
 ### Sprint 5 — Evaluation and Acceptance Criteria
 

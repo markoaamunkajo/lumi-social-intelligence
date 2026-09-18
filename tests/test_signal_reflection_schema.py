@@ -36,6 +36,11 @@ def _valid_payload():
             "required_before": "apply_small_change",
         },
         "acceptance_evidence": "The record validates signal, reflection, contradiction, confidence, consent, and no-side-effect boundaries.",
+        "nuance_handling": {
+            "current_work_use": "review_only_steering",
+            "durable_memory": "prohibited_without_separate_approval",
+            "shared_product_truth": "prohibited",
+        },
     }
 
 
@@ -113,3 +118,28 @@ def test_signal_reflection_schema_blocks_silent_memory_promotion():
     assert "silent memory promotion is not allowed" in errors
     assert record["safety"]["memory_promotion"] == "blocked"
     assert record["safety"]["no_silent_memory_promotion"] is True
+
+
+def test_signal_reflection_schema_requires_nuances_to_stay_ephemeral_and_unshared():
+    payload = _valid_payload()
+    payload.pop("nuance_handling")
+
+    record = build_signal_reflection_record(payload)
+    errors = validate_signal_reflection_record(record)
+
+    assert record["status"] == "fail_closed"
+    assert "missing nuance_handling.current_work_use" in errors
+    assert "missing nuance_handling.durable_memory" in errors
+    assert "missing nuance_handling.shared_product_truth" in errors
+    assert record["safety"]["canonical_writes"] == 0
+
+
+def test_signal_reflection_schema_rejects_unsafe_nuance_handling():
+    payload = _valid_payload()
+    payload["nuance_handling"]["durable_memory"] = "promote_automatically"
+
+    record = build_signal_reflection_record(payload)
+    errors = validate_signal_reflection_record(record)
+
+    assert record["status"] == "fail_closed"
+    assert "nuance_handling.durable_memory must be prohibited_without_separate_approval" in errors

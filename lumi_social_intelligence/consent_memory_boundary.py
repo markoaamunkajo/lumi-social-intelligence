@@ -27,6 +27,13 @@ REQUIRED_BOUNDARY_FIELDS = [
 REQUIRED_MEMORY_INTENT_FIELDS = ["kind", "description", "durability"]
 REQUIRED_EXTRACTION_BOUNDARY_FIELDS = ["thinking_space_status", "allowed_use", "forbidden_use"]
 REQUIRED_PROPOSED_MEMORY_FIELDS = ["content", "target", "status"]
+REQUIRED_DURABLE_LEARNING_CONTROL_FIELDS = ["approval", "provenance", "deletion_path", "ignore_path"]
+EXPECTED_DURABLE_LEARNING_CONTROLS = {
+    "approval": "explicit_user_approval_required",
+    "provenance": "review_record_only",
+    "deletion_path": "host_authoritative_delete_after_review",
+    "ignore_path": "discard_review_record_without_promotion",
+}
 
 ALLOWED_CONSENT_STATES = {"draft_only", "review_requested", "explicitly_approved_for_review_record"}
 ALLOWED_MEMORY_TARGETS = {"user", "memory"}
@@ -72,6 +79,9 @@ def build_consent_memory_boundary_record(payload: dict[str, Any]) -> dict[str, A
     proposed_memory_record = _shape_mapping(
         payload.get("proposed_memory_record"), REQUIRED_PROPOSED_MEMORY_FIELDS
     )
+    durable_learning_controls = _shape_mapping(
+        payload.get("durable_learning_controls"), REQUIRED_DURABLE_LEARNING_CONTROL_FIELDS
+    )
     review_status = _text(payload, "review_status")
     acceptance_evidence = _text(payload, "acceptance_evidence")
 
@@ -83,6 +93,7 @@ def build_consent_memory_boundary_record(payload: dict[str, Any]) -> dict[str, A
         approved_scope=approved_scope,
         denied_scope=denied_scope,
         proposed_memory_record=proposed_memory_record,
+        durable_learning_controls=durable_learning_controls,
         review_status=review_status,
         acceptance_evidence=acceptance_evidence,
     )
@@ -101,6 +112,7 @@ def build_consent_memory_boundary_record(payload: dict[str, Any]) -> dict[str, A
         "approved_scope": approved_scope,
         "denied_scope": denied_scope,
         "proposed_memory_record": proposed_memory_record,
+        "durable_learning_controls": durable_learning_controls,
         "review_status": review_status,
         "acceptance_evidence": acceptance_evidence,
         "evaluation": {
@@ -154,6 +166,7 @@ def validate_consent_memory_boundary_record(record: dict[str, Any]) -> list[str]
     raw_approved_scope = record.get("approved_scope")
     raw_denied_scope = record.get("denied_scope")
     raw_proposed_memory_record = record.get("proposed_memory_record")
+    raw_durable_learning_controls = record.get("durable_learning_controls")
     memory_intent: dict[str, Any] = raw_memory_intent if isinstance(raw_memory_intent, dict) else {}
     extraction_boundary: dict[str, Any] = (
         raw_extraction_boundary if isinstance(raw_extraction_boundary, dict) else {}
@@ -162,6 +175,9 @@ def validate_consent_memory_boundary_record(record: dict[str, Any]) -> list[str]
     denied_scope: list[str] = raw_denied_scope if isinstance(raw_denied_scope, list) else []
     proposed_memory_record: dict[str, Any] = (
         raw_proposed_memory_record if isinstance(raw_proposed_memory_record, dict) else {}
+    )
+    durable_learning_controls: dict[str, Any] = (
+        raw_durable_learning_controls if isinstance(raw_durable_learning_controls, dict) else {}
     )
 
     errors.extend(
@@ -173,6 +189,7 @@ def validate_consent_memory_boundary_record(record: dict[str, Any]) -> list[str]
             approved_scope=approved_scope,
             denied_scope=denied_scope,
             proposed_memory_record=proposed_memory_record,
+            durable_learning_controls=durable_learning_controls,
             review_status=_text(record, "review_status"),
             acceptance_evidence=_text(record, "acceptance_evidence"),
         )
@@ -214,6 +231,7 @@ def _blocked_reasons(
     approved_scope: list[str],
     denied_scope: list[str],
     proposed_memory_record: dict[str, Any],
+    durable_learning_controls: dict[str, Any],
     review_status: str,
     acceptance_evidence: str,
 ) -> list[str]:
@@ -226,6 +244,7 @@ def _blocked_reasons(
             approved_scope=approved_scope,
             denied_scope=denied_scope,
             proposed_memory_record=proposed_memory_record,
+            durable_learning_controls=durable_learning_controls,
             review_status=review_status,
             acceptance_evidence=acceptance_evidence,
         )
@@ -241,6 +260,7 @@ def _contract_errors(
     approved_scope: list[str],
     denied_scope: list[str],
     proposed_memory_record: dict[str, Any],
+    durable_learning_controls: dict[str, Any],
     review_status: str,
     acceptance_evidence: str,
 ) -> list[str]:
@@ -259,6 +279,7 @@ def _contract_errors(
     errors.extend(
         _missing_field_errors("proposed_memory_record", proposed_memory_record, REQUIRED_PROPOSED_MEMORY_FIELDS)
     )
+    errors.extend(_durable_learning_control_errors(durable_learning_controls))
 
     if _text(memory_intent, "durability") != "durable_only_after_explicit_approval":
         errors.append("memory_intent.durability must be durable_only_after_explicit_approval")
@@ -281,6 +302,18 @@ def _contract_errors(
     missing_denials = sorted(REQUIRED_DENIED_SCOPES.difference(denied_scope))
     for scope in missing_denials:
         errors.append(f"denied_scope must include {scope}")
+    return errors
+
+
+def _durable_learning_control_errors(durable_learning_controls: dict[str, Any]) -> list[str]:
+    errors = _missing_field_errors(
+        "durable_learning_controls",
+        durable_learning_controls,
+        REQUIRED_DURABLE_LEARNING_CONTROL_FIELDS,
+    )
+    for field, expected in EXPECTED_DURABLE_LEARNING_CONTROLS.items():
+        if _text(durable_learning_controls, field) and _text(durable_learning_controls, field) != expected:
+            errors.append(f"durable_learning_controls.{field} must be {expected}")
     return errors
 
 

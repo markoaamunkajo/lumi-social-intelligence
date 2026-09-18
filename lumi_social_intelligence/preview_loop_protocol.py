@@ -43,6 +43,7 @@ REQUIRED_PAYLOAD_FIELDS = [
     "approval_state",
     "learning_record_policy",
 ]
+REQUIRED_INTERACTION_POLICY_FIELDS = ["speak_when", "stay_quiet_when", "consent_language"]
 
 
 def build_preview_loop_protocol_run(payload: dict[str, Any]) -> dict[str, Any]:
@@ -53,7 +54,10 @@ def build_preview_loop_protocol_run(payload: dict[str, Any]) -> dict[str, Any]:
     _reject_forbidden_fields(payload)
 
     step_events = _build_step_events(payload.get("steps", []))
-    blocked_reasons = _blocked_reasons(payload, step_events)
+    interaction_policy = _shape_mapping(
+        payload.get("interaction_policy"), REQUIRED_INTERACTION_POLICY_FIELDS
+    )
+    blocked_reasons = _blocked_reasons(payload, step_events, interaction_policy)
     status = "valid_protocol_run" if not blocked_reasons else "fail_closed"
 
     return {
@@ -69,6 +73,7 @@ def build_preview_loop_protocol_run(payload: dict[str, Any]) -> dict[str, Any]:
             "consent_checkpoint": _text(payload, "consent_checkpoint") or "ask_consent",
             "approval_state": _text(payload, "approval_state"),
             "learning_record_policy": _text(payload, "learning_record_policy") or "record_only_if_approved",
+            "interaction_policy": interaction_policy,
             "state_labels": {
                 "mode": "Internal / Confidential",
                 "data_location": "This chat / Hermes context",
@@ -125,6 +130,11 @@ def validate_preview_loop_protocol_run(run: dict[str, Any]) -> list[str]:
         errors.append("consent checkpoint must be ask_consent")
     if protocol.get("learning_record_policy") != "record_only_if_approved":
         errors.append("learning policy must be record_only_if_approved")
+    interaction_policy = protocol.get("interaction_policy")
+    interaction_policy = interaction_policy if isinstance(interaction_policy, dict) else {}
+    errors.extend(
+        _missing_field_errors("interaction_policy", interaction_policy, REQUIRED_INTERACTION_POLICY_FIELDS)
+    )
 
     step_events = run.get("step_events")
     if not isinstance(step_events, list):
@@ -175,11 +185,18 @@ def _build_step_events(raw_steps: Any) -> list[dict[str, str]]:
     return events
 
 
-def _blocked_reasons(payload: dict[str, Any], step_events: list[dict[str, str]]) -> list[str]:
+def _blocked_reasons(
+    payload: dict[str, Any],
+    step_events: list[dict[str, str]],
+    interaction_policy: dict[str, str],
+) -> list[str]:
     blocked = []
     for field in REQUIRED_PAYLOAD_FIELDS:
         if not _text(payload, field):
             blocked.append(f"missing {field}")
+    blocked.extend(
+        _missing_field_errors("interaction_policy", interaction_policy, REQUIRED_INTERACTION_POLICY_FIELDS)
+    )
     if [event["step"] for event in step_events] != PREVIEW_LOOP_STEPS:
         blocked.append("protocol steps must follow exact preview loop order")
     for event in step_events:
@@ -220,6 +237,19 @@ def _run_log_events(status: str, step_events: list[dict[str, str]]) -> list[str]
     else:
         events.append("blocked_before_application")
     return events
+
+
+def _shape_mapping(raw: Any, required_fields: list[str]) -> dict[str, str]:
+    raw = raw if isinstance(raw, dict) else {}
+    return {field: _text(raw, field) for field in required_fields}
+
+
+def _missing_field_errors(prefix: str, mapping: dict[str, str], required_fields: list[str]) -> list[str]:
+    return [
+        f"missing {prefix}.{field}"
+        for field in required_fields
+        if not isinstance(mapping.get(field), str) or not mapping[field].strip()
+    ]
 
 
 def _reject_forbidden_fields(payload: dict[str, Any]) -> None:

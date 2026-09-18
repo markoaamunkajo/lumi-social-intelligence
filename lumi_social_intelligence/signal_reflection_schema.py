@@ -30,6 +30,12 @@ REQUIRED_REFLECTION_FIELDS = [
 ]
 REQUIRED_ADJUSTMENT_FIELDS = ["name", "description", "scope"]
 REQUIRED_CONSENT_FIELDS = ["state", "checkpoint", "required_before"]
+REQUIRED_NUANCE_HANDLING_FIELDS = ["current_work_use", "durable_memory", "shared_product_truth"]
+EXPECTED_NUANCE_HANDLING = {
+    "current_work_use": "review_only_steering",
+    "durable_memory": "prohibited_without_separate_approval",
+    "shared_product_truth": "prohibited",
+}
 
 ALLOWED_SIGNAL_TYPES = {
     "consent_signal",
@@ -68,6 +74,7 @@ def build_signal_reflection_record(payload: dict[str, Any]) -> dict[str, Any]:
     reflection = _shape_mapping(payload.get("reflection"), REQUIRED_REFLECTION_FIELDS)
     proposed_adjustment = _shape_mapping(payload.get("proposed_adjustment"), REQUIRED_ADJUSTMENT_FIELDS)
     consent = _shape_mapping(payload.get("consent"), REQUIRED_CONSENT_FIELDS)
+    nuance_handling = _shape_mapping(payload.get("nuance_handling"), REQUIRED_NUANCE_HANDLING_FIELDS)
     session_goal = _text(payload, "session_goal")
     acceptance_evidence = _text(payload, "acceptance_evidence")
     attempted_memory_promotion = _text(payload, "memory_promotion")
@@ -78,6 +85,7 @@ def build_signal_reflection_record(payload: dict[str, Any]) -> dict[str, Any]:
         reflection=reflection,
         proposed_adjustment=proposed_adjustment,
         consent=consent,
+        nuance_handling=nuance_handling,
         acceptance_evidence=acceptance_evidence,
         attempted_memory_promotion=attempted_memory_promotion,
     )
@@ -94,6 +102,7 @@ def build_signal_reflection_record(payload: dict[str, Any]) -> dict[str, Any]:
         "reflection": reflection,
         "proposed_adjustment": proposed_adjustment,
         "consent": consent,
+        "nuance_handling": nuance_handling,
         "acceptance_evidence": acceptance_evidence,
         "evaluation": {
             "separates_signal_from_interpretation": True,
@@ -147,15 +156,18 @@ def validate_signal_reflection_record(record: dict[str, Any]) -> list[str]:
     raw_reflection = record.get("reflection")
     raw_proposed_adjustment = record.get("proposed_adjustment")
     raw_consent = record.get("consent")
+    raw_nuance_handling = record.get("nuance_handling")
     observed_signal: dict[str, Any] = raw_observed_signal if isinstance(raw_observed_signal, dict) else {}
     reflection: dict[str, Any] = raw_reflection if isinstance(raw_reflection, dict) else {}
     proposed_adjustment: dict[str, Any] = raw_proposed_adjustment if isinstance(raw_proposed_adjustment, dict) else {}
     consent: dict[str, Any] = raw_consent if isinstance(raw_consent, dict) else {}
+    nuance_handling: dict[str, Any] = raw_nuance_handling if isinstance(raw_nuance_handling, dict) else {}
 
     errors.extend(_missing_field_errors("observed_signal", observed_signal, REQUIRED_SIGNAL_FIELDS))
     errors.extend(_missing_field_errors("reflection", reflection, REQUIRED_REFLECTION_FIELDS))
     errors.extend(_missing_field_errors("proposed_adjustment", proposed_adjustment, REQUIRED_ADJUSTMENT_FIELDS))
     errors.extend(_missing_field_errors("consent", consent, REQUIRED_CONSENT_FIELDS))
+    errors.extend(_nuance_handling_errors(nuance_handling))
     errors.extend(_enum_errors(observed_signal, reflection, consent))
     if not isinstance(reflection.get("contradictions"), list):
         errors.append("reflection.contradictions must be a list")
@@ -192,6 +204,7 @@ def _blocked_reasons(
     reflection: dict[str, Any],
     proposed_adjustment: dict[str, Any],
     consent: dict[str, Any],
+    nuance_handling: dict[str, Any],
     acceptance_evidence: str,
     attempted_memory_promotion: str,
 ) -> list[str]:
@@ -204,6 +217,7 @@ def _blocked_reasons(
     blocked.extend(_missing_field_errors("reflection", reflection, REQUIRED_REFLECTION_FIELDS))
     blocked.extend(_missing_field_errors("proposed_adjustment", proposed_adjustment, REQUIRED_ADJUSTMENT_FIELDS))
     blocked.extend(_missing_field_errors("consent", consent, REQUIRED_CONSENT_FIELDS))
+    blocked.extend(_nuance_handling_errors(nuance_handling))
     blocked.extend(_enum_errors(observed_signal, reflection, consent))
     if not isinstance(reflection.get("contradictions"), list):
         blocked.append("reflection.contradictions must be a list")
@@ -232,6 +246,16 @@ def _enum_errors(
         errors.append("unsupported consent.state")
     if _text(consent, "checkpoint") and _text(consent, "checkpoint") != "ask_before_apply":
         errors.append("consent checkpoint must be ask_before_apply")
+    return errors
+
+
+def _nuance_handling_errors(nuance_handling: dict[str, Any]) -> list[str]:
+    errors = _missing_field_errors(
+        "nuance_handling", nuance_handling, REQUIRED_NUANCE_HANDLING_FIELDS
+    )
+    for field, expected in EXPECTED_NUANCE_HANDLING.items():
+        if _text(nuance_handling, field) and _text(nuance_handling, field) != expected:
+            errors.append(f"nuance_handling.{field} must be {expected}")
     return errors
 
 

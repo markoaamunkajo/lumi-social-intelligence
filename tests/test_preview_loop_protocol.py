@@ -61,6 +61,11 @@ def _valid_payload():
         "consent_checkpoint": "ask_consent",
         "approval_state": "approved",
         "learning_record_policy": "record_only_if_approved",
+        "interaction_policy": {
+            "speak_when": "A meaningful adjustment needs a visible review card.",
+            "stay_quiet_when": "No meaningful adjustment is needed or the user asked for quiet.",
+            "consent_language": "Approve this small adjustment, revise it, or leave it as a draft?",
+        },
     }
 
 
@@ -122,3 +127,17 @@ def test_preview_loop_protocol_rejects_private_runtime_fields():
         assert "forbidden preview protocol field: scheduler_queue" in str(exc)
     else:
         raise AssertionError("private runtime field was accepted")
+
+
+def test_preview_loop_protocol_requires_visible_speak_quiet_and_consent_policy():
+    payload = _valid_payload()
+    payload.pop("interaction_policy")
+
+    run = build_preview_loop_protocol_run(payload)
+    errors = validate_preview_loop_protocol_run(run)
+
+    assert run["status"] == "fail_closed"
+    assert "missing interaction_policy.speak_when" in errors
+    assert "missing interaction_policy.stay_quiet_when" in errors
+    assert "missing interaction_policy.consent_language" in errors
+    assert run["safety"]["runtime_actions"] == []

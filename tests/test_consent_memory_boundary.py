@@ -29,6 +29,12 @@ def _valid_payload():
         },
         "review_status": "requires_human_review",
         "acceptance_evidence": "Record blocks writes, extraction, runtime actions, and durable learning without explicit approval.",
+        "durable_learning_controls": {
+            "approval": "explicit_user_approval_required",
+            "provenance": "review_record_only",
+            "deletion_path": "host_authoritative_delete_after_review",
+            "ignore_path": "discard_review_record_without_promotion",
+        },
     }
 
 
@@ -113,3 +119,29 @@ def test_consent_memory_boundary_requires_review_status_and_evidence():
     assert "review_status must be requires_human_review" in errors
     assert "missing acceptance_evidence" in errors
     assert record["safety"]["no_hermes_scheduler_config_memory_mutation"] is True
+
+
+def test_consent_memory_boundary_requires_approval_provenance_and_disposal_paths():
+    payload = _valid_payload()
+    payload.pop("durable_learning_controls")
+
+    record = build_consent_memory_boundary_record(payload)
+    errors = validate_consent_memory_boundary_record(record)
+
+    assert record["status"] == "fail_closed"
+    assert "missing durable_learning_controls.approval" in errors
+    assert "missing durable_learning_controls.provenance" in errors
+    assert "missing durable_learning_controls.deletion_path" in errors
+    assert "missing durable_learning_controls.ignore_path" in errors
+    assert record["safety"]["canonical_writes"] == 0
+
+
+def test_consent_memory_boundary_rejects_non_authoritative_disposal_controls():
+    payload = _valid_payload()
+    payload["durable_learning_controls"]["ignore_path"] = "promote_anyway"
+
+    record = build_consent_memory_boundary_record(payload)
+    errors = validate_consent_memory_boundary_record(record)
+
+    assert record["status"] == "fail_closed"
+    assert "durable_learning_controls.ignore_path must be discard_review_record_without_promotion" in errors
